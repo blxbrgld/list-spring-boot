@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @Validated
-@RequestMapping("/comment")
+@RequestMapping("/comments")
 @Api(description = "Reference data related operations", tags = Tags.REFERENCE_DATA)
 public class CommentController {
 

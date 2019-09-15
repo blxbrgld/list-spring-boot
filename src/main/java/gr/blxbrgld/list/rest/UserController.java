@@ -23,7 +23,7 @@ import java.util.Optional;
  */
 @RestController
 @Validated
-@RequestMapping("/user")
+@RequestMapping("/users")
 @Api(description = "User related operations", tags = Tags.USERS)
 public class UserController {
 

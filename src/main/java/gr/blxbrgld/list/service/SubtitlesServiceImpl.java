@@ -45,6 +45,14 @@ public class SubtitlesServiceImpl implements SubtitlesService {
 		return subtitlesDao.get(id);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Optional<Subtitles> getSubtitles(String title) {
+		return subtitlesDao.getByTitle(title);
+	}
+
     /**
      * {@inheritDoc}
      */

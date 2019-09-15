@@ -23,7 +23,7 @@ import java.util.Optional;
  */
 @RestController
 @Validated
-@RequestMapping("/activity")
+@RequestMapping("/activities")
 @Api(description = "Reference data related operations", tags = Tags.REFERENCE_DATA)
 public class ActivityController {
 
@@ -51,7 +51,7 @@ public class ActivityController {
      * @param order Ascending or Descending Ordering
      * @return List Of {@link Activity}
      */
-    @GetMapping("list")
+    @GetMapping
     @ApiOperation(value = "Retrieve list of Activities")
     public List<Activity> list(@ApiParam(value = "List ordering", defaultValue = "ASC", allowableValues = "ASC,DESC") @RequestParam(required = false) String order) {
         return activityService.getActivities("title", Order.get(order));
@@ -76,6 +76,9 @@ public class ActivityController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ApiOperation(value = "Update Activity")
     public void update(@ApiParam(value = "The Activity Id", required = true) @PathVariable("id") Integer id, @Valid @TitleNotDuplicate @ApiParam(value = "Activity info to update", required = true) @RequestBody Activity activity) {
+        if(!activityService.getActivity(id).isPresent()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Activity not found.");
+        }
         activity.setId(id); // Set Activity's Id
         activityService.persistOrMergeActivity(activity);
     }

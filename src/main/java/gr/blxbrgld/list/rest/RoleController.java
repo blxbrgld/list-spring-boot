@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @Validated
-@RequestMapping("/role")
+@RequestMapping("/roles")
 @Api(description = "User related operations", tags = Tags.USERS)
 public class RoleController {
 

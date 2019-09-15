@@ -1,6 +1,5 @@
-package gr.blxbrgld.dao.hibernate;
+package gr.blxbrgld.list.dao.hibernate;
 
-import gr.blxbrgld.list.dao.hibernate.CategoryDao;
 import gr.blxbrgld.list.enums.Order;
 import gr.blxbrgld.list.model.Category;
 import org.junit.Ignore;

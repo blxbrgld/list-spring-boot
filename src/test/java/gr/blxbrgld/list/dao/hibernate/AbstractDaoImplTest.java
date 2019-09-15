@@ -1,8 +1,5 @@
-package gr.blxbrgld.dao.hibernate;
+package gr.blxbrgld.list.dao.hibernate;
 
-import gr.blxbrgld.list.dao.hibernate.ArtistDao;
-import gr.blxbrgld.list.dao.hibernate.CommentDao;
-import gr.blxbrgld.list.dao.hibernate.SubtitlesDao;
 import gr.blxbrgld.list.model.Artist;
 import gr.blxbrgld.list.model.Comment;
 import gr.blxbrgld.list.model.Subtitles;

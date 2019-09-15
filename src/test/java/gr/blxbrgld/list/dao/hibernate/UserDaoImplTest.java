@@ -1,7 +1,5 @@
-package gr.blxbrgld.dao.hibernate;
+package gr.blxbrgld.list.dao.hibernate;
 
-import gr.blxbrgld.list.dao.hibernate.RoleDao;
-import gr.blxbrgld.list.dao.hibernate.UserDao;
 import gr.blxbrgld.list.model.Role;
 import gr.blxbrgld.list.model.User;
 import org.hibernate.SessionFactory;

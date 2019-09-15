@@ -1,8 +1,5 @@
-package gr.blxbrgld.dao.hibernate;
+package gr.blxbrgld.list.dao.hibernate;
 
-import gr.blxbrgld.list.dao.hibernate.CommentDao;
-import gr.blxbrgld.list.dao.hibernate.CommentItemDao;
-import gr.blxbrgld.list.dao.hibernate.ItemDao;
 import gr.blxbrgld.list.model.Comment;
 import org.hibernate.SessionFactory;
 import org.junit.Ignore;

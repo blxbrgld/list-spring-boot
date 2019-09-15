@@ -1,0 +1,22 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <!-- mvn liquibase:changelogSync To Mark The changeSets As Applied In DATABASECHANGELOG Table -->
+    <changeSet author="blxbrgld" id="dml-1">
+        <sql>
+            INSERT INTO Roles VALUES (1,'Administrator','2014-02-19 10:22:46'), (2,'Viewer','2014-02-19 10:23:46');
+            INSERT INTO Users VALUES (1,'blixabargeld','$2a$10$A/8YlR/m8lAbe6.Lr.HDRuqTHYM80r9K2oIayAOTXQX6bjAKWoMGW','nikolaos.i.papadopoulos@gmail.com',1,1,'2014-05-02 06:18:37');
+        </sql>
+    </changeSet>
+    <!-- 'Book' Entity Change Sets -->
+    <changeSet author="npapadooulos" id="dml-2">
+        <comment>Book Category</comment>
+        <sql>
+            INSERT INTO `Categories` (`Title`) VALUES ('Books');
+        </sql>
+    </changeSet>
+    <changeSet author="blxbrgld" id="dml-3">
+        <comment>Author Activity</comment>
+        <sql>
+            INSERT INTO `Activities` (`Title`) VALUES ('Author');
+        </sql>
+    </changeSet>
+</databaseChangeLog>

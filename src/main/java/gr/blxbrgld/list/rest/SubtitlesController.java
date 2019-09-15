@@ -53,7 +53,7 @@ public class SubtitlesController {
      * @param order Ascending or Descending Ordering
      * @return List Of {@link Subtitles}
      */
-    @GetMapping("list")
+    @GetMapping
     @ApiOperation(value = "Retrieve list of Subtitles")
     public List<Subtitles> list(@ApiParam(value = "List ordering", defaultValue = "ASC", allowableValues = "ASC,DESC") @RequestParam(required = false) String order) {
         return subtitlesService.getSubtitles("title", Order.get(order));
@@ -78,6 +78,9 @@ public class SubtitlesController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ApiOperation(value = "Update Subtitle")
     public void update(@ApiParam(value = "The Subtitle Id", required = true) @PathVariable("id") Integer id, @Valid @TitleNotDuplicate @ApiParam(value = "Subtitle info to update", required = true) @RequestBody Subtitles subtitles) {
+        if(!subtitlesService.getSubtitles(id).isPresent()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Subtitle not found.");
+        }
         subtitles.setId(id); // Set Subtitles's Id
         subtitlesService.persistOrMergeSubtitles(subtitles);
     }

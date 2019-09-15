@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -68,9 +67,31 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-test</artifactId>
+			<groupId>net.serenity-bdd</groupId>
+			<artifactId>serenity-core</artifactId>
+			<version>2.0.71</version>
+		</dependency>
+		<dependency>
+			<groupId>net.serenity-bdd</groupId>
+			<artifactId>serenity-junit</artifactId>
+			<version>2.0.71</version>
+		</dependency>
+		<dependency>
+			<groupId>net.serenity-bdd</groupId>
+			<artifactId>serenity-spring</artifactId>
+			<version>2.0.71</version>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>net.serenity-bdd</groupId>
+			<artifactId>serenity-rest-assured</artifactId>
+			<version>2.0.71</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>net.serenity-bdd</groupId>
+			<artifactId>serenity-cucumber</artifactId>
+			<version>1.9.45</version>
 		</dependency>
 	</dependencies>
 	<!-- Plugins -->
@@ -80,6 +101,86 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.22.2</version>
+				<configuration>
+					<testFailureIgnore>true</testFailureIgnore>
+				</configuration>
+			</plugin>
+			<!-- mvn clean install -P-skip-it -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>2.22.2</version>
+				<configuration>
+					<includes>
+						<include>**/*Test.java</include>
+						<include>**/*Suite.java</include>
+					</includes>
+					<testFailureIgnore>true</testFailureIgnore>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>integration-test</goal>
+							<goal>verify</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- mvn serenity:aggregate -->
+			<plugin>
+				<groupId>net.serenity-bdd.maven.plugins</groupId>
+				<artifactId>serenity-maven-plugin</artifactId>
+				<version>2.0.71</version>
+				<executions>
+					<execution>
+						<id>serenity-reports</id>
+						<phase>post-integration-test</phase>
+						<goals>
+							<goal>aggregate</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- mvn resources:resources liquibase:liquibase-goal -->
+			<plugin>
+				<groupId>org.liquibase</groupId>
+				<artifactId>liquibase-maven-plugin</artifactId>
+				<version>3.3.2</version>
+				<configuration>
+					<propertyFile>target/classes/database/liquibase/liquibase.properties</propertyFile>
+					<propertyFileWillOverride>true</propertyFileWillOverride>
+					<promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>mysql</groupId>
+						<artifactId>mysql-connector-java</artifactId>
+						<version>8.0.17</version>
+					</dependency>
+				</dependencies>
+			</plugin>
 		</plugins>
 	</build>
+	<profiles>
+		<profile>
+			<id>skip-it</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-failsafe-plugin</artifactId>
+						<configuration>
+							<skipITs>true</skipITs>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>

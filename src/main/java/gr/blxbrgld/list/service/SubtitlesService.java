@@ -25,14 +25,21 @@ public interface SubtitlesService {
 	 * @return List of Subtitles
 	 */
 	List<Subtitles> getSubtitles(String attribute, Order order);
-	
+
 	/**
 	 * Get Subtitles Object Given It's Id
 	 * @param id Subtitles' Id
 	 * @return Subtitles Object
 	 */
 	Optional<Subtitles> getSubtitles(Integer id);
-	
+
+	/**
+	 * Get subtitles by title
+	 * @param title The title
+	 * @return {@link Subtitles} if title exists
+	 */
+	Optional<Subtitles> getSubtitles(String title);
+
 	/**
 	 * Delete Subtitles By Id
 	 * @param id The Id

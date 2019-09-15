@@ -25,7 +25,7 @@ import java.util.Optional;
  */
 @RestController
 @Validated
-@RequestMapping("/artist")
+@RequestMapping("/artists")
 @Api(description = "Artist related operations", tags = Tags.ARTISTS)
 public class ArtistController {
 
@@ -63,7 +63,7 @@ public class ArtistController {
      * @param order Ascending or Descending Ordering
      * @return List Of {@link Artist}
      */
-    @GetMapping("list")
+    @GetMapping
     @ApiOperation(value = "Retrieve list of Artists")
     public List<Artist> list(
             @ApiParam(value = "List ordering", defaultValue = "ASC", allowableValues = "ASC,DESC") @RequestParam(required = false) String order,
@@ -92,6 +92,9 @@ public class ArtistController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ApiOperation(value = "Update Artist")
     public void update(@ApiParam(value = "The Artist Id", required = true) @PathVariable("id") Integer id, @Valid @TitleNotDuplicate @ApiParam(value = "Artist info to update", required = true) @RequestBody Artist artist) {
+        if(!artistService.getArtist(id).isPresent()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Artist not found.");
+        }
         artist.setId(id); // Set Artist's Id
         artistService.persistOrMergeArtist(artist);
     }

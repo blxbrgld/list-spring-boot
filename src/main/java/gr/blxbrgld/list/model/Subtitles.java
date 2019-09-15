@@ -3,7 +3,9 @@ package gr.blxbrgld.list.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -23,6 +25,7 @@ import java.util.Calendar;
  */
 @Getter
 @Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "Subtitles")
 @JsonPropertyOrder({ "id", "title", "dateUpdated" })
@@ -48,6 +51,15 @@ public class Subtitles implements Serializable {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
 	@ApiModelProperty(dataType = "java.lang.String", readOnly = true, position = 2)
 	private Calendar dateUpdated;
+
+	/**
+	 * Subtitles builder
+	 * @param title The title
+	 */
+	@Builder
+	public Subtitles(String title) {
+		this.title = title;
+	}
 
 	/**
 	 * {@inheritDoc}

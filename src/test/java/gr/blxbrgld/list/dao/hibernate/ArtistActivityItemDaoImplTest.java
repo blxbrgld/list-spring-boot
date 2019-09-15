@@ -1,9 +1,5 @@
-package gr.blxbrgld.dao.hibernate;
+package gr.blxbrgld.list.dao.hibernate;
 
-import gr.blxbrgld.list.dao.hibernate.ActivityDao;
-import gr.blxbrgld.list.dao.hibernate.ArtistActivityItemDao;
-import gr.blxbrgld.list.dao.hibernate.ArtistDao;
-import gr.blxbrgld.list.dao.hibernate.ItemDao;
 import gr.blxbrgld.list.model.Activity;
 import gr.blxbrgld.list.model.Artist;
 import org.hibernate.SessionFactory;

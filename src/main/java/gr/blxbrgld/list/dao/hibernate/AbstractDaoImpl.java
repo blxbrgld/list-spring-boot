@@ -126,6 +126,18 @@ public abstract class AbstractDaoImpl<T> implements AbstractDao<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
+	public List<T> getAll() {
+		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<T> criteria = builder.createQuery(getDomainClass());
+		Root<T> root = criteria.from(getDomainClass());
+		criteria.select(root);
+		return entityManager.createQuery(criteria).getResultList();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public List<T> getAll(String attribute, Order order) {
 		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<T> criteria = builder.createQuery(getDomainClass());
@@ -171,6 +183,14 @@ public abstract class AbstractDaoImpl<T> implements AbstractDao<T> {
     @Override
 	public void deleteById(Serializable id) {
 		get(id).ifPresent(this::delete);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void deleteByTitle(String title) {
+    	getByTitle(title).ifPresent(this::delete);
 	}
 
     /**

@@ -1,6 +1,5 @@
-package gr.blxbrgld.dao.hibernate;
+package gr.blxbrgld.list.dao.hibernate;
 
-import gr.blxbrgld.list.dao.hibernate.ArtistDao;
 import gr.blxbrgld.list.model.Artist;
 import org.junit.Ignore;
 import org.junit.Test;

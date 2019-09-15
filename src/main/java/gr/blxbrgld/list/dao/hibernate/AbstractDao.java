@@ -46,6 +46,12 @@ public interface AbstractDao<T> {
 	Optional<T> getByTitle(String title);
 
 	/**
+	 * Get all objects
+	 * @return List of objects
+	 */
+	List<T> getAll();
+
+	/**
 	 * Get All Objects
 	 * @param attribute Attribute To Order Results By
 	 * @param order Ascending or Descending Ordering
@@ -74,6 +80,12 @@ public interface AbstractDao<T> {
 	 * @param id The Id
 	 */
 	void deleteById(Serializable id);
+
+	/**
+	 * Delete object by title
+	 * @param title The title
+	 */
+	void deleteByTitle(String title);
 
 	/**
 	 * Count Objects
