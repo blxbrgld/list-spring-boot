@@ -9,6 +9,7 @@ import gr.blxbrgld.list.validators.TitleNotDuplicate;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -31,6 +32,10 @@ public class ArtistController {
 
     @Autowired
     private ArtistService artistService;
+
+    private static final String DEFAULT_ORDER = "title";
+    private static final int DEFAULT_START = 0;
+    private static final int DEFAULT_SIZE = 100;
 
     /**
      * Get Artist By Id
@@ -67,10 +72,16 @@ public class ArtistController {
     @ApiOperation(value = "Retrieve list of Artists")
     public List<Artist> list(
             @ApiParam(value = "List ordering", defaultValue = "ASC", allowableValues = "ASC,DESC") @RequestParam(required = false) String order,
-            @ApiParam(value = "Result to start from", defaultValue = "0") @RequestParam(required = false) int first,
-            @ApiParam(value = "Number of results", defaultValue = "10") @RequestParam(required = false) int size) {
-        //TODO Handle The size Params, Set A Limit etc.
-        return artistService.getArtists("title", Order.get(order), first, size);
+            @ApiParam(value = "Result to start from", defaultValue = "0") @RequestParam(required = false) Integer start,
+            @ApiParam(value = "Number of results", defaultValue = "10") @RequestParam(required = false) Integer size) {
+        int startFrom = ObjectUtils.defaultIfNull(start, 0);
+        int pageSize = ObjectUtils.defaultIfNull(size, 0);
+        return artistService.getArtists(
+            DEFAULT_ORDER,
+            Order.get(order),
+            startFrom > 0 ? startFrom : DEFAULT_START,
+            pageSize > DEFAULT_SIZE ? DEFAULT_SIZE : pageSize
+        );
     }
 
     /**

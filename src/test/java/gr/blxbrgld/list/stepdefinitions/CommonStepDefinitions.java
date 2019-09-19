@@ -42,8 +42,13 @@ public class CommonStepDefinitions extends ListTestBase {
     }
 
     @Then("^the response contains key (.*) with value (.*)$")
-    public void arrayContainsEntry(String key, String value) {
+    public void responseContainsEntry(String key, String value) {
         assertTrue(then().extract().jsonPath().get(key).equals(value));
+    }
+
+    @Then("^the response does not contain key (.*) with value (.*)$")
+    public void responseDoesNotContainEntry(String key, String value) {
+        assertFalse(then().extract().jsonPath().get(key).equals(value));
     }
 
     @Then("^the response list contains entry with key (.*) and value (.*)$")

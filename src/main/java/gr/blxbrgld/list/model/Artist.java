@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -25,6 +27,7 @@ import java.util.List;
  */
 @Getter
 @Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "Artists")
 @NamedQueries({
@@ -86,6 +89,15 @@ public class Artist implements Serializable {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
 	@ApiModelProperty(dataType = "java.lang.String", readOnly = true, position = 3)
 	private Calendar dateUpdated;
+
+	/**
+	 * Artist builder
+	 * @param title The title
+	 */
+	@Builder
+	public Artist(String title) {
+		this.title = title;
+	}
 
 	/**
 	 * {@inheritDoc}
