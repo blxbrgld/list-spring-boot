@@ -4,11 +4,11 @@ Feature: Endpoints related to subtitles
   Greek Subtitles, English Subtitles and No Subtitles are considered values that surely exist.
 
   Scenario: Request for an id that does not exist
-    When request Danish Subtitles by id
+    When request subtitles Danish Subtitles by id
     Then the http response status code is 404
 
   Scenario: Request for an id that exists
-    When request Greek Subtitles by id
+    When request subtitles Greek Subtitles by id
     Then the http response status code is 200
     And the response contains key title with value Greek Subtitles
 

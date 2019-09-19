@@ -32,6 +32,13 @@ public interface ActivityService {
 	 * @return Activity Object
 	 */
 	Optional<Activity> getActivity(Integer id);
+
+	/**
+	 * Get activity by title
+	 * @param title The title
+	 * @return {@link Activity}
+	 */
+	Optional<Activity> getActivity(String title);
 	
 	/**
 	 * Delete Activity By Id

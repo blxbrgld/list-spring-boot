@@ -28,6 +28,8 @@ public class SubtitlesStepDefinitions extends ListTestBase {
     @Steps
     CommonSteps commonSteps;
 
+    private static final String SUBTITLES_PATH = "/subtitles/";
+
     @Given("^subtitles with title (.*) exist$")
     public void subtitlesExist(String title) {
         subtitlesService.persistOrMergeSubtitles( // Persist both as subtitles and fixtures
@@ -35,21 +37,21 @@ public class SubtitlesStepDefinitions extends ListTestBase {
         );
     }
 
-    @When("^request (.*) by id$")
+    @When("^request subtitles (.*) by id$")
     public void getSubtitleById(String title) {
         Optional<Subtitles> subtitles = subtitlesService.getSubtitles(title);
         Integer id = subtitles.map(Subtitles::getId).orElse(-1); // The found id or an id that for sure does not exist
-        commonSteps.request(HttpMethod.GET, "/subtitles/" + id);
+        commonSteps.request(HttpMethod.GET, SUBTITLES_PATH + id);
     }
 
     @When("^subtitles list is requested$")
     public void getSubtitles() {
-        commonSteps.request(HttpMethod.GET, "/subtitles");
+        commonSteps.request(HttpMethod.GET, SUBTITLES_PATH);
     }
 
     @When("^request to create subtitles with title (.*)$")
     public void createSubtitles(String title) {
-        commonSteps.request(HttpMethod.POST, "/subtitles", fixtureService.subtitlesFixture(title));
+        commonSteps.request(HttpMethod.POST, SUBTITLES_PATH, fixtureService.subtitlesFixture(title));
     }
 
     @When("^request to update subtitles with title (.*) to (.*)$")
@@ -58,7 +60,7 @@ public class SubtitlesStepDefinitions extends ListTestBase {
         Integer id = subtitles.map(Subtitles::getId).orElse(-1); // The found id or an id that for sure does not exist
         commonSteps.request(
             HttpMethod.PUT,
-            "/subtitles/" + id,
+            SUBTITLES_PATH + id,
             fixtureService.subtitlesFixture(updated)
         );
     }
@@ -67,6 +69,6 @@ public class SubtitlesStepDefinitions extends ListTestBase {
     public void deleteSubtitles(String title) {
         Optional<Subtitles> subtitles = subtitlesService.getSubtitles(title);
         Integer id = subtitles.map(Subtitles::getId).orElse(-1); // The found id or an id that for sure does not exist
-        commonSteps.request(HttpMethod.DELETE, "/subtitles/" + id);
+        commonSteps.request(HttpMethod.DELETE, SUBTITLES_PATH + id);
     }
 }

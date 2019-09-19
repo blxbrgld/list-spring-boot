@@ -6,5 +6,5 @@ package gr.blxbrgld.list.enums;
  */
 public enum FixtureType {
 
-    SUBTITLES
+    ACTIVITY, SUBTITLES
 }

@@ -36,6 +36,11 @@ public class CommonStepDefinitions extends ListTestBase {
         then().statusCode(status);
     }
 
+    @Then("^the response is (.*)$")
+    public void expectedResponse(String response) {
+        assertEquals(response, then().extract().asString());
+    }
+
     @Then("^the response contains key (.*) with value (.*)$")
     public void arrayContainsEntry(String key, String value) {
         assertTrue(then().extract().jsonPath().get(key).equals(value));

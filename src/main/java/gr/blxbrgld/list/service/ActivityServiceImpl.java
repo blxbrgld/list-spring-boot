@@ -45,6 +45,14 @@ public class ActivityServiceImpl implements ActivityService {
 		return activityDao.get(id);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Optional<Activity> getActivity(String title) {
+		return activityDao.getByTitle(title);
+	}
+
     /**
      * {@inheritDoc}
      */
