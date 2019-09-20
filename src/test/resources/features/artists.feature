@@ -66,6 +66,7 @@ Feature: Endpoints related to artists
   Scenario: Request for a random artist
     When random artist is requested
     Then the http response status code is 200
+    And the response contains not null attribute title
 
   Scenario: Request for the count of artists
     When count of artists is requested

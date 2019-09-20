@@ -51,6 +51,11 @@ public class CommonStepDefinitions extends ListTestBase {
         assertFalse(then().extract().jsonPath().get(key).equals(value));
     }
 
+    @Then("^the response contains not null attribute (.*)$")
+    public void notNullAttribute(String key) {
+        assertNotNull(then().extract().jsonPath().get(key));
+    }
+
     @Then("^the response list contains entry with key (.*) and value (.*)$")
     public void listContainsEntry(String key, String value) {
         assertTrue(then().extract().jsonPath().getList(key).contains(value));
