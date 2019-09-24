@@ -31,7 +31,7 @@ public class ArtistStepDefinitions extends ListTestBase {
 
     private static final String ARTISTS_PATH = "/artists/";
 
-    @Given("^artist with title (.*) exist$")
+    @Given("^artist with title (.*) exists$")
     public void artistExist(String title) {
         artistService.persistOrMergeArtist( // Persist both as artist and fixtures
             fixtureService.artistFixture(title)

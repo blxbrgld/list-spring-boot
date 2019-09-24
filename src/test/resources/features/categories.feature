@@ -75,4 +75,11 @@ Feature: Endpoints related to categories
   Scenario: Update category
 
   @wip
-  Scenario: Delete category
+  Scenario: Request to delete a category that is related with some items
+
+  Scenario: Request to delete a category
+    Given category with title Furniture exists
+    When request to delete category with title Furniture
+    Then the http response status code is 204
+    When request category Furniture by id
+    Then the http response status code is 404

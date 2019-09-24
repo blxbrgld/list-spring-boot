@@ -63,4 +63,11 @@ public class CategoryStepDefinitions extends ListTestBase {
     public void createCategoryWithParent(String title, String parent) {
         commonSteps.request(HttpMethod.POST, CATEGORIES_PATH, fixtureService.categoryFixture(title, parent));
     }
+
+    @When("^request to delete category with title (.*)$")
+    public void deleteCategory(String title) {
+        Optional<Category> category = categoryService.getCategory(title);
+        Integer id = category.map(Category::getId).orElse(-1); // The found id or an id that for sure does not exist
+        commonSteps.request(HttpMethod.DELETE, CATEGORIES_PATH + id);
+    }
 }

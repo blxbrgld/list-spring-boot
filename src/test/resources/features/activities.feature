@@ -18,7 +18,7 @@ Feature: Endpoints related to activities
     And title contains in any order Actor,Author,Conductor,Director,Musician
 
   Scenario: Request to create activity with a title that already exists
-    Given activity with title Cameraman exist
+    Given activity with title Cameraman exists
     When request to create activity with title Cameraman
     Then the http response status code is 400
 
@@ -34,13 +34,13 @@ Feature: Endpoints related to activities
     Then the http response status code is 404
 
   Scenario: Request to update an activity with a title that already exists
-    Given activity with title Cameraman exist
-    And activity with title Photographer exist
+    Given activity with title Cameraman exists
+    And activity with title Photographer exists
     When request to update activity with title Cameraman to Photographer
     Then the http response status code is 400
 
   Scenario: Request to update an activity
-    Given activity with title Cameraman exist
+    Given activity with title Cameraman exists
     When request to update activity with title Cameraman to Photographer
     Then the http response status code is 204
     When activity list is requested
@@ -55,7 +55,7 @@ Feature: Endpoints related to activities
   Scenario: Request to delete an activity that is related with some items
 
   Scenario: Request to delete an activity
-    Given activity with title Cameraman exist
+    Given activity with title Cameraman exists
     When request to delete activity with title Cameraman
     Then the http response status code is 204
     When activity list is requested

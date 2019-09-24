@@ -30,7 +30,7 @@ public class ActivityStepDefinitions extends ListTestBase {
 
     private static final String ACTIVITIES_PATH = "/activities/";
 
-    @Given("^activity with title (.*) exist$")
+    @Given("^activity with title (.*) exists$")
     public void activityExist(String title) {
         activityService.persistOrMergeActivity( // Persist both as activity and fixtures
             fixtureService.activityFixture(title)

@@ -20,7 +20,7 @@ Feature: Endpoints related to artists
     And the response does not contain key [0].title with value !!!
 
   Scenario: Request to create artist with a title that already exists
-    Given artist with title Britney Spears exist
+    Given artist with title Britney Spears exists
     When request to create artist with title Britney Spears
     Then the http response status code is 400
 
@@ -35,13 +35,13 @@ Feature: Endpoints related to artists
     Then the http response status code is 404
 
   Scenario: Request to update an artist with a title that already exists
-    Given artist with title Britney Spears exist
-    And artist with title Beyonce exist
+    Given artist with title Britney Spears exists
+    And artist with title Beyonce exists
     When request to update artist with title Britney Spears to Beyonce
     Then the http response status code is 400
 
   Scenario: Request to update an artist
-    Given artist with title Britney Spears exist
+    Given artist with title Britney Spears exists
     When request to update artist with title Britney Spears to Beyonce
     Then the http response status code is 204
     When request artist Britney Spears by id
@@ -57,7 +57,7 @@ Feature: Endpoints related to artists
   Scenario: Request to delete an artist that is related with some items
 
   Scenario: Request to delete an artist
-    Given artist with title Britney Spears exist
+    Given artist with title Britney Spears exists
     When request to delete artist with title Britney Spears
     Then the http response status code is 204
     When request artist Britney Spears by id
