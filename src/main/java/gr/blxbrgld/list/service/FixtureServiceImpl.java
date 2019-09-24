@@ -1,15 +1,9 @@
 package gr.blxbrgld.list.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import gr.blxbrgld.list.dao.hibernate.ActivityDao;
-import gr.blxbrgld.list.dao.hibernate.ArtistDao;
-import gr.blxbrgld.list.dao.hibernate.FixtureDao;
-import gr.blxbrgld.list.dao.hibernate.SubtitlesDao;
+import gr.blxbrgld.list.dao.hibernate.*;
 import gr.blxbrgld.list.enums.FixtureType;
-import gr.blxbrgld.list.model.Activity;
-import gr.blxbrgld.list.model.Artist;
-import gr.blxbrgld.list.model.Fixture;
-import gr.blxbrgld.list.model.Subtitles;
+import gr.blxbrgld.list.model.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -37,6 +31,9 @@ public class FixtureServiceImpl implements FixtureService {
 
     @Autowired
     private ArtistDao artistDao;
+
+    @Autowired
+    private CategoryDao categoryDao;
 
     @Autowired
     private SubtitlesDao subtitlesDao;
@@ -73,6 +70,20 @@ public class FixtureServiceImpl implements FixtureService {
      * {@inheritDoc}
      */
     @Override
+    public Category categoryFixture(String title, String parent) {
+        try {
+            Category category = Category.builder().title(title).parent(parent).build();
+            fixtureDao.persist(new Fixture(FixtureType.CATEGORY, objectMapper.writeValueAsString(category)));
+            return category;
+        } catch (Exception exception) {
+            throw new RuntimeException("Category fixture exception.");
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Subtitles subtitlesFixture(String title) {
         try {
             Subtitles subtitles = Subtitles.builder().title(title).build();
@@ -92,25 +103,29 @@ public class FixtureServiceImpl implements FixtureService {
         List<Fixture> fixtures = fixtureDao.getAll();
         try {
             for (Fixture fixture : fixtures) {
+                // Delete the entity created
                 switch (fixture.getType()) {
                     case ACTIVITY:
                         Activity activity = objectMapper.readValue(fixture.getFixture(), Activity.class);
                         activityDao.deleteByTitle(activity.getTitle());
-                        fixtureDao.deleteById(fixture.getId());
                         break;
                     case ARTIST:
                         Artist artist = objectMapper.readValue(fixture.getFixture(), Artist.class);
                         artistDao.deleteByTitle(artist.getTitle());
-                        fixtureDao.deleteById(fixture.getId());
+                        break;
+                    case CATEGORY:
+                        Category category = objectMapper.readValue(fixture.getFixture(), Category.class);
+                        categoryDao.deleteByTitle(category.getTitle());
                         break;
                     case SUBTITLES:
                         Subtitles subtitles = objectMapper.readValue(fixture.getFixture(), Subtitles.class);
                         subtitlesDao.deleteByTitle(subtitles.getTitle());
-                        fixtureDao.deleteById(fixture.getId());
                         break;
                     default:
                         log.error("Unknown fixture type {}.", fixture.getType());
                 }
+                // Delete the fixture
+                fixtureDao.deleteById(fixture.getId());
             }
         } catch (Exception exception) {
             log.error("Exception", exception);

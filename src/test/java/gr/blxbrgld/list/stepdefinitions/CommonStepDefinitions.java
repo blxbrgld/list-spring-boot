@@ -66,6 +66,11 @@ public class CommonStepDefinitions extends ListTestBase {
         assertFalse(then().extract().jsonPath().getList(key).contains(value));
     }
 
+    @Then("^the response list has size (\\d+)$")
+    public void listSize(int size) {
+        assertEquals(then().extract().jsonPath().getList("$").size(), size);
+    }
+
     @Then("^(.*) contains in any order (.*)$")
     public void elementContainsInAnyOrder(String element, String values) {
         List<String> actual = then().extract().jsonPath().getList(ROOT_ELEMENT.equals(element) ? "$" : element);

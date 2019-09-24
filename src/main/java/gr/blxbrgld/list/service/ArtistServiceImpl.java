@@ -29,6 +29,7 @@ public class ArtistServiceImpl implements ArtistService {
 	public void persistOrMergeArtist(Artist artist) {
 		artistDao.persistOrMerge(artist);
 	}
+
     /**
      * {@inheritDoc}
      */

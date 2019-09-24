@@ -2,9 +2,11 @@ package gr.blxbrgld.list.validators;
 
 import gr.blxbrgld.list.dao.hibernate.ActivityDao;
 import gr.blxbrgld.list.dao.hibernate.ArtistDao;
+import gr.blxbrgld.list.dao.hibernate.CategoryDao;
 import gr.blxbrgld.list.dao.hibernate.SubtitlesDao;
 import gr.blxbrgld.list.model.Activity;
 import gr.blxbrgld.list.model.Artist;
+import gr.blxbrgld.list.model.Category;
 import gr.blxbrgld.list.model.Subtitles;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -24,6 +26,7 @@ import java.util.Optional;
 @Constraint(validatedBy = {
     TitleNotDuplicate.ArtistTitleNotDuplicateValidator.class,
     TitleNotDuplicate.ActivityTitleNotDuplicateValidator.class,
+    TitleNotDuplicate.CategoryTitleNotDuplicateValidator.class,
     TitleNotDuplicate.SubtitlesTitleNotDuplicateValidator.class
 })
 @Documented
@@ -68,6 +71,25 @@ public @interface TitleNotDuplicate {
         public boolean isValid(Artist artist, ConstraintValidatorContext constraintValidatorContext) {
             Optional<Artist> existing = artistDao.getByTitle(artist.getTitle());
             return !(existing.isPresent() && !existing.get().getId().equals(artist.getId()));
+        }
+    }
+
+    /**
+     * Ensure That The Category's To Be Updated/Persisted Title Does Not Exist
+     * @author blxbrgld
+     */
+    class CategoryTitleNotDuplicateValidator implements ConstraintValidator<TitleNotDuplicate, Category> {
+
+        @Autowired
+        private CategoryDao categoryDao;
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public boolean isValid(Category category, ConstraintValidatorContext constraintValidatorContext) {
+            Optional<Category> existing = categoryDao.getByTitle(category.getTitle());
+            return !(existing.isPresent() && !existing.get().getId().equals(category.getId()));
         }
     }
 

@@ -1,9 +1,6 @@
 package gr.blxbrgld.list.service;
 
-import gr.blxbrgld.list.model.Activity;
-import gr.blxbrgld.list.model.Artist;
-import gr.blxbrgld.list.model.Subtitles;
-import gr.blxbrgld.list.model.Fixture;
+import gr.blxbrgld.list.model.*;
 
 /**
  * Fixtures service interface
@@ -24,6 +21,14 @@ public interface FixtureService {
      * @return {@link Artist}
      */
     Artist artistFixture(String title);
+
+    /**
+     * Build a {@link Category} and the {@link Fixture} related with it
+     * @param title Category's title
+     * @param parent Category's parent title
+     * @return {@link Category}
+     */
+    Category categoryFixture(String title, String parent);
 
     /**
      * Build a {@link Subtitles} and the {@link Fixture} related with it

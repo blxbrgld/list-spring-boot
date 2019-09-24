@@ -9,7 +9,7 @@ import java.util.List;
  * @author blxbrgld
  */
 public interface CategoryDao extends AbstractDao<Category> {
-	
+
 	/**
 	 * Find Categories Having The Given Parent
 	 * @param parent Parent {@link Category}

@@ -1,5 +1,6 @@
 package gr.blxbrgld.list.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import gr.blxbrgld.list.validators.FileValid;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,7 +14,6 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.OrderBy;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.persistence.*;
@@ -98,7 +98,7 @@ public class Item implements Serializable {
 	private String titleEll;
 	
 	@NotNull
-	@ManyToOne
+	@ManyToOne(optional = false)
 	@JoinColumn(name = "Category", referencedColumnName = "Id", nullable = false)
 	private Category category;
 
@@ -158,7 +158,7 @@ public class Item implements Serializable {
 	private Set<CommentItem> commentItems;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
 	@Column(name = "DateUpdated")
 	private Calendar dateUpdated;
 

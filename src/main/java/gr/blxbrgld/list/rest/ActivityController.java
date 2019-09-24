@@ -64,18 +64,19 @@ public class ActivityController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation(value = "Create Activity")
-    public void create(@Valid @TitleNotDuplicate @ApiParam(value = "Activity info to create", required = true) @RequestBody Activity activity) {
+    public void create(@Valid @TitleNotDuplicate @ApiParam(value = "Activity to create", required = true) @RequestBody Activity activity) {
         activityService.persistOrMergeActivity(activity);
     }
 
     /**
-     * Update An Activity
+     * Update an Activity
+     * @param id The id to update
      * @param activity {@link Activity}
      */
     @PutMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ApiOperation(value = "Update Activity")
-    public void update(@ApiParam(value = "The Activity Id", required = true) @PathVariable("id") Integer id, @Valid @TitleNotDuplicate @ApiParam(value = "Activity info to update", required = true) @RequestBody Activity activity) {
+    public void update(@ApiParam(value = "The Activity Id", required = true) @PathVariable("id") Integer id, @Valid @TitleNotDuplicate @ApiParam(value = "Activity to update", required = true) @RequestBody Activity activity) {
         if(!activityService.getActivity(id).isPresent()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Activity not found.");
         }
