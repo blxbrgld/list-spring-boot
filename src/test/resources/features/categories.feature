@@ -71,8 +71,35 @@ Feature: Endpoints related to categories
     And the response contains key title with value Music
     And the response list contains entry with key categories.title and value Furniture
 
-  @wip
-  Scenario: Update category
+  Scenario: Request to update a category that does not exist
+    When request to update category with title Furniture to Devices
+    Then the http response status code is 404
+
+  Scenario: Request to update a category with a title that already exists
+    Given category with title Furniture exists
+    And category with title Devices exists
+    When request to update category with title Furniture to Devices
+    Then the http response status code is 400
+
+  Scenario: Request to update a category's title
+    Given category with title Furniture exists
+    When request to update category with title Furniture to Devices
+    Then the http response status code is 204
+    When request category Furniture by id
+    Then the http response status code is 404
+    When request category Devices by id
+    Then the http response status code is 200
+    And the response contains key title with value Devices
+
+  Scenario: Request to update a category's parent
+    Given category with title Furniture exists
+    And category with title Devices exists
+    When request to update parent of category Furniture to Devices
+    Then the http response status code is 204
+    When request category Devices by id
+    Then the http response status code is 200
+    And the response contains key title with value Devices
+    And the response list contains entry with key categories.title and value Furniture
 
   @wip
   Scenario: Request to delete a category that is related with some items

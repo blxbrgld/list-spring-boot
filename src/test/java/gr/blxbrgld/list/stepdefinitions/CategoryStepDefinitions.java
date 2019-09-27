@@ -64,6 +64,27 @@ public class CategoryStepDefinitions extends ListTestBase {
         commonSteps.request(HttpMethod.POST, CATEGORIES_PATH, fixtureService.categoryFixture(title, parent));
     }
 
+    @When("^request to update category with title (.*) to (.*)$")
+    public void updateCategory(String existing, String updated) {
+        Optional<Category> category = categoryService.getCategory(existing);
+        Integer id = category.map(Category::getId).orElse(-1); // The found id or an id that for sure does not exist
+        commonSteps.request(
+            HttpMethod.PUT,
+            CATEGORIES_PATH + id,
+            fixtureService.categoryFixture(updated, null)
+        );
+    }
+
+    @When("^request to update parent of category (.*) to (.*)")
+    public void updateCategoryParent(String title, String parent) {
+        Category category = categoryService.getCategory(title).get();
+        commonSteps.request(
+            HttpMethod.PUT,
+            CATEGORIES_PATH + category.getId(),
+            fixtureService.categoryFixture(title, parent)
+        );
+    }
+
     @When("^request to delete category with title (.*)$")
     public void deleteCategory(String title) {
         Optional<Category> category = categoryService.getCategory(title);
