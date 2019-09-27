@@ -2,7 +2,6 @@ package gr.blxbrgld.list.service;
 
 import gr.blxbrgld.list.enums.Order;
 import gr.blxbrgld.list.model.Comment;
-import org.springframework.validation.Errors;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,19 +13,11 @@ import java.util.Optional;
 public interface CommentService {
 
 	/**
-	 * Persist Comment Object
+	 * Persist Or Merge Comment Object
 	 * @param comment Comment Object
-	 * @param errors BindingResult Errors Of Comment Form
 	 */
-	void persistComment(Comment comment, Errors errors);
-	
-	/**
-	 * Merge Comment Object
-	 * @param comment Comment Object
-	 * @param errors BindingResult Errors Of Comment Form
-	 */
-	void mergeComment(Comment comment, Errors errors);
-	
+	void persistOrMergeComment(Comment comment);
+
 	/**
 	 * Get All Comment Objects
 	 * @param attribute Attribute To Order Results By
@@ -41,11 +32,17 @@ public interface CommentService {
 	 * @return Comment Object
 	 */
 	Optional<Comment> getComment(Integer id);
+
+	/**
+	 * Get comment by title
+	 * @param title The title
+	 * @return {@link Comment}
+	 */
+	Optional<Comment> getComment(String title);
 	
 	/**
 	 * Delete Comment With The Given Id If There Are No Related Item Objects
 	 * @param id Comment's Id
-	 * @return TRUE or FALSE
 	 */
-	boolean deleteComment(Integer id);
+	void deleteComment(Integer id);
 }

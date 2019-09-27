@@ -49,7 +49,7 @@ public class Activity implements Serializable {
 	private String title;
 	
 	@OneToMany(mappedBy = "idActivity")
-	@JsonIgnore //TODO Review This
+	@JsonIgnore
 	@ApiModelProperty(hidden = true)
 	private List<ArtistActivityItem> artistActivityItems;
 

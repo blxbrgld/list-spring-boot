@@ -1,13 +1,7 @@
 package gr.blxbrgld.list.validators;
 
-import gr.blxbrgld.list.dao.hibernate.ActivityDao;
-import gr.blxbrgld.list.dao.hibernate.ArtistDao;
-import gr.blxbrgld.list.dao.hibernate.CategoryDao;
-import gr.blxbrgld.list.dao.hibernate.SubtitlesDao;
-import gr.blxbrgld.list.model.Activity;
-import gr.blxbrgld.list.model.Artist;
-import gr.blxbrgld.list.model.Category;
-import gr.blxbrgld.list.model.Subtitles;
+import gr.blxbrgld.list.dao.hibernate.*;
+import gr.blxbrgld.list.model.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -52,6 +46,9 @@ public @interface TitleNotDuplicate {
         private CategoryDao categoryDao;
 
         @Autowired
+        private CommentDao commentDao;
+
+        @Autowired
         private SubtitlesDao subtitlesDao;
 
         /**
@@ -89,6 +86,8 @@ public @interface TitleNotDuplicate {
                 return artistDao.getByTitle(((Artist) object).getTitle()).map(Artist::getId);
             } else if(object instanceof Category) {
                 return categoryDao.getByTitle(((Category) object).getTitle()).map(Category::getId);
+            } else if(object instanceof Comment) {
+                return commentDao.getByTitle(((Comment) object).getTitle()).map(Comment::getId);
             } else if(object instanceof Subtitles) {
                 return subtitlesDao.getByTitle(((Subtitles) object).getTitle()).map(Subtitles::getId);
             } else {

@@ -31,6 +31,13 @@ public interface FixtureService {
     Category categoryFixture(String title, String parent);
 
     /**
+     * Build a {@link Comment} and the {@link Fixture} related with it
+     * @param title Comment's title
+     * @return {@link Comment}
+     */
+    Comment commentFixture(String title);
+
+    /**
      * Build a {@link Subtitles} and the {@link Fixture} related with it
      * @param title The title
      * @return {@link Subtitles}

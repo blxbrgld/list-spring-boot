@@ -3,7 +3,10 @@ package gr.blxbrgld.list.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -24,6 +27,7 @@ import java.util.List;
  */
 @Getter
 @Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "Comments")
 @NamedQuery(name = "findCommentByTitle", query = "FROM Comment WHERE title = :title")
@@ -36,21 +40,34 @@ public class Comment implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
 	@GenericGenerator(name = "native", strategy = "native")
 	@Column(name = "Id")
+	@ApiModelProperty(readOnly = true, position = 0)
 	private Integer id;
 
 	@NotNull
-	@Length(min = 1, max = 45)
+	@Length(min = 3, max = 45)
 	@Column(name = "Title")
+	@ApiModelProperty(required = true, allowableValues = "range[3, 45]", position = 1)
 	private String title;
 	
 	@OneToMany(mappedBy = "idComment")
-	@JsonIgnore //TODO Review This
+	@JsonIgnore
+	@ApiModelProperty(hidden = true)
 	private List<CommentItem> commentItems;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
 	@Column(name = "DateUpdated")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+	@ApiModelProperty(dataType = "java.lang.String", readOnly = true, position = 2)
 	private Calendar dateUpdated;
+
+	/**
+	 * Comment builder
+	 * @param title The title
+	 */
+	@Builder
+	public Comment(String title) {
+		this.title = title;
+	}
 
 	/**
 	 * {@inheritDoc}

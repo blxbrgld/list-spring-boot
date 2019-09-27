@@ -1,12 +1,10 @@
 package gr.blxbrgld.list.service;
 
 import gr.blxbrgld.list.dao.hibernate.CommentDao;
-import gr.blxbrgld.list.dao.hibernate.CommentItemDao;
 import gr.blxbrgld.list.enums.Order;
 import gr.blxbrgld.list.model.Comment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.Errors;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -23,31 +21,12 @@ public class CommentServiceImpl implements CommentService {
 	@Autowired
 	private CommentDao commentDao;
 
-	@Autowired
-	private CommentItemDao commentItemDao;
-
     /**
      * {@inheritDoc}
      */
 	@Override
-	public void persistComment(Comment comment, Errors errors) {
-		validateTitle(comment, errors);
-		boolean valid = !errors.hasErrors();
-		if(valid) {
-            commentDao.persist(comment);
-        }
-	}
-
-    /**
-     * {@inheritDoc}
-     */
-	@Override
-	public void mergeComment(Comment comment, Errors errors) {
-		validateTitle(comment, errors);
-		boolean valid = !errors.hasErrors();
-		if(valid) {
-            commentDao.merge(comment);
-        }
+	public void persistOrMergeComment(Comment comment) {
+		commentDao.persistOrMerge(comment);
 	}
 
     /**
@@ -66,29 +45,19 @@ public class CommentServiceImpl implements CommentService {
 		return commentDao.get(id);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Optional<Comment> getComment(String title) {
+		return commentDao.getByTitle(title);
+	}
+
     /**
      * {@inheritDoc}
      */
 	@Override
-	public boolean deleteComment(Integer id) {
-		Optional<Comment> comment = commentDao.get(id);
-		if(comment.isPresent() && !commentItemDao.havingCommentExists(comment.get())) { // No CommentItems With This Comment Exist
-			commentDao.deleteById(id);
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	/**
-	 * Validate Uniqueness Of Comment's Title
-	 * @param comment Comment Object
-	 * @param errors BindingResult Errors Of Comment Form
-	 */
-	private void validateTitle(Comment comment, Errors errors) {
-		Optional<Comment> existing = commentDao.getByTitle(comment.getTitle());
-		if(existing.isPresent() && !existing.get().getId().equals(comment.getId()) ) {
-			errors.rejectValue("title", "error.duplicate");
-		}
+	public void deleteComment(Integer id) {
+		commentDao.deleteById(id);
 	}
 }

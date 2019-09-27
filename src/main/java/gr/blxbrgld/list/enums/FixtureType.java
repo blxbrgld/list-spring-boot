@@ -6,5 +6,5 @@ package gr.blxbrgld.list.enums;
  */
 public enum FixtureType {
 
-    ACTIVITY, ARTIST, CATEGORY, SUBTITLES
+    ACTIVITY, ARTIST, CATEGORY, COMMENT, SUBTITLES
 }

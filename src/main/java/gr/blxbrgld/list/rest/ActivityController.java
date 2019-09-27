@@ -30,6 +30,8 @@ public class ActivityController {
     @Autowired
     private ActivityService activityService;
 
+    private static final String DEFAULT_ORDER = "title";
+
     /**
      * Get Activity By Id
      * @param id The Id
@@ -54,7 +56,7 @@ public class ActivityController {
     @GetMapping
     @ApiOperation(value = "Retrieve list of Activities")
     public List<Activity> list(@ApiParam(value = "List ordering", defaultValue = "ASC", allowableValues = "ASC,DESC") @RequestParam(required = false) String order) {
-        return activityService.getActivities("title", Order.get(order));
+        return activityService.getActivities(DEFAULT_ORDER, Order.get(order));
     }
 
     /**
