@@ -39,6 +39,9 @@ public class FixtureServiceImpl implements FixtureService {
     private CommentDao commentDao;
 
     @Autowired
+    private RoleDao roleDao;
+
+    @Autowired
     private SubtitlesDao subtitlesDao;
 
     /**
@@ -101,6 +104,21 @@ public class FixtureServiceImpl implements FixtureService {
      * {@inheritDoc}
      */
     @Override
+    public Role roleFixture(String title) {
+        try {
+            Role role = Role.builder().title(title).build();
+            fixtureDao.persist(new Fixture(FixtureType.ROLE, objectMapper.writeValueAsString(role)));
+            return role;
+        } catch (Exception exception) {
+            throw new RuntimeException("Role fixture exception.");
+        }
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Subtitles subtitlesFixture(String title) {
         try {
             Subtitles subtitles = Subtitles.builder().title(title).build();
@@ -137,6 +155,10 @@ public class FixtureServiceImpl implements FixtureService {
                     case COMMENT:
                         Comment comment = objectMapper.readValue(fixture.getFixture(), Comment.class);
                         commentDao.deleteByTitle(comment.getTitle());
+                        break;
+                    case ROLE:
+                        Role role = objectMapper.readValue(fixture.getFixture(), Role.class);
+                        roleDao.deleteByTitle(role.getTitle());
                         break;
                     case SUBTITLES:
                         Subtitles subtitles = objectMapper.readValue(fixture.getFixture(), Subtitles.class);

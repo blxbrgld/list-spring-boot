@@ -49,6 +49,9 @@ public @interface TitleNotDuplicate {
         private CommentDao commentDao;
 
         @Autowired
+        private RoleDao roleDao;
+
+        @Autowired
         private SubtitlesDao subtitlesDao;
 
         /**
@@ -88,6 +91,8 @@ public @interface TitleNotDuplicate {
                 return categoryDao.getByTitle(((Category) object).getTitle()).map(Category::getId);
             } else if(object instanceof Comment) {
                 return commentDao.getByTitle(((Comment) object).getTitle()).map(Comment::getId);
+            } else if(object instanceof Role) {
+                return roleDao.getByTitle(((Role) object).getTitle()).map(Role::getId);
             } else if(object instanceof Subtitles) {
                 return subtitlesDao.getByTitle(((Subtitles) object).getTitle()).map(Subtitles::getId);
             } else {

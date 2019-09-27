@@ -38,6 +38,13 @@ public interface FixtureService {
     Comment commentFixture(String title);
 
     /**
+     * Build a {@link Role} and the {@link Fixture} related with it
+     * @param title Role's title
+     * @return {@link Role}
+     */
+    Role roleFixture(String title);
+
+    /**
      * Build a {@link Subtitles} and the {@link Fixture} related with it
      * @param title The title
      * @return {@link Subtitles}

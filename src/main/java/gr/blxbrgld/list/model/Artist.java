@@ -80,7 +80,7 @@ public class Artist implements Serializable {
 	
 	//@ContainedIn //TODO Hibernate Search
 	@OneToMany(mappedBy = "idArtist")
-	@JsonIgnore //TODO Review This
+	@JsonIgnore
 	@ApiModelProperty(hidden = true)
 	private List<ArtistActivityItem> artistActivityItems;
 

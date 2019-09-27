@@ -53,7 +53,6 @@ public class User implements Serializable {
 	
 	@ManyToOne
 	@JoinColumn(name = "Role", referencedColumnName = "Id", nullable = false)
-	@JsonManagedReference //TODO Review This
 	private Role role;
 
 	@NotNull

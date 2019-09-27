@@ -6,7 +6,6 @@ import gr.blxbrgld.list.enums.Order;
 import gr.blxbrgld.list.model.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.Errors;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -30,24 +29,8 @@ public class RoleServiceImpl implements RoleService {
      * {@inheritDoc}
      */
 	@Override
-	public void persistRole(Role role, Errors errors) {
-		validateRole(role, errors);
-		boolean valid = !errors.hasErrors();
-		if(valid) {
-            roleDao.persist(role);
-        }
-	}
-
-    /**
-     * {@inheritDoc}
-     */
-	@Override
-	public void mergeRole(Role role, Errors errors) {
-		validateRole(role, errors);
-		boolean valid = !errors.hasErrors();
-		if(valid) {
-            roleDao.merge(role);
-        }
+	public void persistOrMergeRole(Role role) {
+		roleDao.persistOrMerge(role);
 	}
 
     /**
@@ -66,30 +49,19 @@ public class RoleServiceImpl implements RoleService {
 		return roleDao.get(id);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Optional<Role> getRole(String title) {
+		return roleDao.getByTitle(title);
+	}
+
     /**
      * {@inheritDoc}
      */
 	@Override
-	public boolean deleteRole(Integer id) {
-		Optional<Role> role = roleDao.get(id);
-		if(role.isPresent() && !userDao.havingRoleExists(role.get())) { // No Users With This Role Exist
-			roleDao.deleteById(id);
-			return true;
-		}
-		else {
-			return false;
-		}
+	public void deleteRole(Integer id) {
+		roleDao.deleteById(id);
 	}
-
-	/**
-	 * Validate Uniqueness Of Role's Title
-	 * @param role Role Object
-	 * @param errors BindingResult Errors Of Role Form
-	 */
-	private void validateRole(Role role, Errors errors) {
-		Optional<Role> existing = roleDao.getByTitle(role.getTitle());
-		if(existing.isPresent() && !existing.get().getId().equals(role.getId()) ) {
-			errors.rejectValue("title", "error.duplicate");
-		}
-	}	
 }

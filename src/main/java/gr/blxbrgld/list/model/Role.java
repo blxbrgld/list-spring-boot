@@ -1,9 +1,11 @@
 package gr.blxbrgld.list.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -16,7 +18,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Calendar;
-import java.util.List;
 
 /**
  * Role Domain Object
@@ -24,6 +25,7 @@ import java.util.List;
  */
 @Getter
 @Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "Roles")
 @JsonPropertyOrder({ "id", "title", "dateUpdated" })
@@ -35,21 +37,29 @@ public class Role implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
 	@GenericGenerator(name = "native", strategy = "native")
 	@Column(name = "Id")
+	@ApiModelProperty(readOnly = true, position = 0)
 	private Integer id;
 
 	@NotNull
 	@Length(min = 3, max = 15)
 	@Column(name = "Title")
+	@ApiModelProperty(required = true, allowableValues = "range[3, 15]", position = 1)
 	private String title;
-	
-	@OneToMany(mappedBy = "role")
-	@JsonBackReference //TODO Review This
-	private List<User> users;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
 	@Column(name = "DateUpdated")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+	@ApiModelProperty(dataType = "java.lang.String", readOnly = true, position = 2)
 	private Calendar dateUpdated;
+
+	/**
+	 * Role builder
+	 * @param title The title
+	 */
+	@Builder
+	public Role(String title) {
+		this.title = title;
+	}
 
 	/**
 	 * {@inheritDoc}
