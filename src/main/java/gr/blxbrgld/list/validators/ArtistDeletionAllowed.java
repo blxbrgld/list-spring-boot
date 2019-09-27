@@ -16,7 +16,7 @@ import java.util.Optional;
  * ArtistDeletionAllowed Annotation
  * @author blxbrgld
  */
-@Target({ElementType.FIELD, ElementType.PARAMETER})
+@Target({ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = {ArtistDeletionAllowed.ArtistDeletionAllowedValidator.class})
 @Documented

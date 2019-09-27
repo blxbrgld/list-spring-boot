@@ -91,7 +91,8 @@ public class ArtistController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation(value = "Create Artist")
-    public void create(@Valid @TitleNotDuplicate @ApiParam(value = "Artist to create", required = true) @RequestBody Artist artist) {
+    @TitleNotDuplicate
+    public void create(@Valid @ApiParam(value = "Artist to create", required = true) @RequestBody Artist artist) {
         artistService.persistOrMergeArtist(artist);
     }
 
@@ -103,7 +104,8 @@ public class ArtistController {
     @PutMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ApiOperation(value = "Update Artist")
-    public void update(@ApiParam(value = "The Artist Id", required = true) @PathVariable("id") Integer id, @Valid @TitleNotDuplicate @ApiParam(value = "Artist to update", required = true) @RequestBody Artist artist) {
+    @TitleNotDuplicate
+    public void update(@ApiParam(value = "The Artist Id", required = true) @PathVariable("id") Integer id, @Valid @ApiParam(value = "Artist to update", required = true) @RequestBody Artist artist) {
         if(!artistService.getArtist(id).isPresent()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Artist not found.");
         }

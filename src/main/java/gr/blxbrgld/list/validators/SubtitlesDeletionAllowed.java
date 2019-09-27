@@ -16,7 +16,7 @@ import java.util.Optional;
  * SubtitlesDeletionAllowed Annotation
  * @author blxbrgld
  */
-@Target({ElementType.FIELD, ElementType.PARAMETER})
+@Target({ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = {SubtitlesDeletionAllowed.SubtitlesDeletionAllowedValidator.class})
 @Documented

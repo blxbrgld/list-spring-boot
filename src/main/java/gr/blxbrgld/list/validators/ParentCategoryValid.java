@@ -14,7 +14,7 @@ import java.lang.annotation.*;
  * ParentCategoryValid Annotation
  * @author blxbrgld
  */
-@Target({ElementType.FIELD, ElementType.PARAMETER})
+@Target({ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = {ParentCategoryValid.ParentCategoryValidator.class})
 @Documented

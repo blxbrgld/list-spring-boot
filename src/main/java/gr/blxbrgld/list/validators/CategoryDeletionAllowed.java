@@ -16,7 +16,7 @@ import java.util.Optional;
  * CategoryDeletionAllowed Annotation
  * @author blxbrgld
  */
-@Target({ElementType.FIELD, ElementType.PARAMETER})
+@Target({ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = {CategoryDeletionAllowed.CategoryDeletionAllowedValidator.class})
 @Documented

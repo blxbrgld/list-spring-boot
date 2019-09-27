@@ -8,12 +8,15 @@ import gr.blxbrgld.list.model.Activity;
 import gr.blxbrgld.list.model.Artist;
 import gr.blxbrgld.list.model.Category;
 import gr.blxbrgld.list.model.Subtitles;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.validation.Constraint;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import javax.validation.Payload;
+import javax.validation.constraintvalidation.SupportedValidationTarget;
+import javax.validation.constraintvalidation.ValidationTarget;
 import java.lang.annotation.*;
 import java.util.Optional;
 
@@ -21,14 +24,9 @@ import java.util.Optional;
  * TitleNotDuplicate Annotation
  * @author blxbrgld
  */
-@Target({ElementType.FIELD, ElementType.PARAMETER})
+@Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = {
-    TitleNotDuplicate.ArtistTitleNotDuplicateValidator.class,
-    TitleNotDuplicate.ActivityTitleNotDuplicateValidator.class,
-    TitleNotDuplicate.CategoryTitleNotDuplicateValidator.class,
-    TitleNotDuplicate.SubtitlesTitleNotDuplicateValidator.class
-})
+@Constraint(validatedBy = { TitleNotDuplicate.TitleNotDuplicateValidator.class })
 @Documented
 public @interface TitleNotDuplicate {
 
@@ -37,67 +35,21 @@ public @interface TitleNotDuplicate {
     Class<? extends Payload>[] payload() default {};
 
     /**
-     * Ensure That The Activity's To Be Updated/Persisted Title Does Not Exist
+     * For an update endpoint validate id and object, for a create endpoint just the object
      * @author blxbrgld
      */
-    class ActivityTitleNotDuplicateValidator implements ConstraintValidator<TitleNotDuplicate, Activity> {
+    @Slf4j
+    @SupportedValidationTarget(ValidationTarget.PARAMETERS)
+    class TitleNotDuplicateValidator implements ConstraintValidator<TitleNotDuplicate, Object[]> {
 
         @Autowired
         private ActivityDao activityDao;
 
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public boolean isValid(Activity activity, ConstraintValidatorContext constraintValidatorContext) {
-            Optional<Activity> existing = activityDao.getByTitle(activity.getTitle());
-            return !(existing.isPresent() && !existing.get().getId().equals(activity.getId()));
-        }
-    }
-
-    /**
-     * Ensure That The Artist's To Be Updated/Persisted Title Does Not Exist
-     * @author blxbrgld
-     */
-    class ArtistTitleNotDuplicateValidator implements ConstraintValidator<TitleNotDuplicate, Artist> {
-
         @Autowired
         private ArtistDao artistDao;
 
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public boolean isValid(Artist artist, ConstraintValidatorContext constraintValidatorContext) {
-            Optional<Artist> existing = artistDao.getByTitle(artist.getTitle());
-            return !(existing.isPresent() && !existing.get().getId().equals(artist.getId()));
-        }
-    }
-
-    /**
-     * Ensure That The Category's To Be Updated/Persisted Title Does Not Exist
-     * @author blxbrgld
-     */
-    class CategoryTitleNotDuplicateValidator implements ConstraintValidator<TitleNotDuplicate, Category> {
-
         @Autowired
         private CategoryDao categoryDao;
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public boolean isValid(Category category, ConstraintValidatorContext constraintValidatorContext) {
-            Optional<Category> existing = categoryDao.getByTitle(category.getTitle());
-            return !(existing.isPresent() && !existing.get().getId().equals(category.getId()));
-        }
-    }
-
-    /**
-     * Ensure That The Subtitle's To Be Updated/Persisted Title Does Not Exist
-     * @author blxbrgld
-     */
-    class SubtitlesTitleNotDuplicateValidator implements ConstraintValidator<TitleNotDuplicate, Subtitles> {
 
         @Autowired
         private SubtitlesDao subtitlesDao;
@@ -106,9 +58,42 @@ public @interface TitleNotDuplicate {
          * {@inheritDoc}
          */
         @Override
-        public boolean isValid(Subtitles subtitles, ConstraintValidatorContext constraintValidatorContext) {
-            Optional<Subtitles> existing = subtitlesDao.getByTitle(subtitles.getTitle());
-            return !(existing.isPresent() && !existing.get().getId().equals(subtitles.getId()));
+        public boolean isValid(Object[] params, ConstraintValidatorContext constraintValidatorContext) {
+            try {
+                if (params.length == 2) {
+                    Optional<Integer> existing = existing(params[1]);
+                    return !(existing.isPresent() && !existing.get().equals(params[0]));
+                } else if (params.length == 1) {
+                    Optional<Integer> existing = existing(params[0]);
+                    return !existing.isPresent();
+                } else {
+                    log.error("@TitleNotDuplicate cannot be applied to this method.");
+                    return false;
+                }
+            } catch (Exception exception) {
+                log.error("@TitleNotDuplicate cannot be applied to this object.");
+                return false;
+            }
+        }
+
+        /**
+         * Check if the given object is one of the allowed entities and if it is and it exists return it's id
+         * @param object {@link Object}
+         * @return The entity's id or empty optional if it does not exist
+         * @throws Exception thrown if the given object has not one of the allowed types
+         */
+        private Optional<Integer> existing(Object object) throws Exception {
+            if(object instanceof Activity) {
+                return activityDao.getByTitle(((Activity) object).getTitle()).map(Activity::getId);
+            } else if(object instanceof Artist) {
+                return artistDao.getByTitle(((Artist) object).getTitle()).map(Artist::getId);
+            } else if(object instanceof Category) {
+                return categoryDao.getByTitle(((Category) object).getTitle()).map(Category::getId);
+            } else if(object instanceof Subtitles) {
+                return subtitlesDao.getByTitle(((Subtitles) object).getTitle()).map(Subtitles::getId);
+            } else {
+                throw new Exception("TitleNotDuplicate Validator Error.");
+            }
         }
     }
 }

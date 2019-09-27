@@ -66,7 +66,8 @@ public class SubtitlesController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation(value = "Create Subtitle")
-    public void create(@Valid @TitleNotDuplicate @ApiParam(value = "Subtitle info to create", required = true) @RequestBody Subtitles subtitles) {
+    @TitleNotDuplicate
+    public void create(@Valid @ApiParam(value = "Subtitle info to create", required = true) @RequestBody Subtitles subtitles) {
         subtitlesService.persistOrMergeSubtitles(subtitles);
     }
 
@@ -77,7 +78,8 @@ public class SubtitlesController {
     @PutMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ApiOperation(value = "Update Subtitle")
-    public void update(@ApiParam(value = "The Subtitle Id", required = true) @PathVariable("id") Integer id, @Valid @TitleNotDuplicate @ApiParam(value = "Subtitle info to update", required = true) @RequestBody Subtitles subtitles) {
+    @TitleNotDuplicate
+    public void update(@ApiParam(value = "The Subtitle Id", required = true) @PathVariable("id") Integer id, @Valid @ApiParam(value = "Subtitle info to update", required = true) @RequestBody Subtitles subtitles) {
         if(!subtitlesService.getSubtitles(id).isPresent()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Subtitle not found.");
         }

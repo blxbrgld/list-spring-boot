@@ -67,7 +67,8 @@ public class CategoryController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation(value = "Create Category")
-    public void create(@Valid @TitleNotDuplicate @ParentCategoryValid @ApiParam(value = "Category to create", required = true) @RequestBody Category category) {
+    @TitleNotDuplicate
+    public void create(@Valid @ParentCategoryValid @ApiParam(value = "Category to create", required = true) @RequestBody Category category) {
         categoryService.persistOrMergeCategory(category);
     }
 
@@ -79,7 +80,8 @@ public class CategoryController {
     @PutMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ApiOperation(value = "Update Category")
-    public void update(@ApiParam(value = "The Category Id", required = true) @PathVariable("id") Integer id, @Valid @TitleNotDuplicate @ParentCategoryValid @ApiParam(value = "Category to update", required = true) @RequestBody Category category) {
+    @TitleNotDuplicate
+    public void update(@ApiParam(value = "The Category Id", required = true) @PathVariable("id") Integer id, @Valid @ParentCategoryValid @ApiParam(value = "Category to update", required = true) @RequestBody Category category) {
         if(!categoryService.getCategory(id).isPresent()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found.");
         }
