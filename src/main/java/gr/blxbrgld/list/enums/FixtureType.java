@@ -11,5 +11,6 @@ public enum FixtureType {
     CATEGORY,
     COMMENT,
     ROLE,
-    SUBTITLES
+    SUBTITLES,
+    USER
 }

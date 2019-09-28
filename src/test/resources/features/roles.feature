@@ -51,7 +51,7 @@ Feature: Endpoints related to roles
     When request to delete role with title Moderator
     Then the http response status code is 400
 
-  @wip
+  @wip #TODO Testing
   Scenario: Request to delete a role that is related with a user
 
   Scenario: Request to delete a role

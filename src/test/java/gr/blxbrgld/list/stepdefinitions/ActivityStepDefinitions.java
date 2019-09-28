@@ -44,7 +44,7 @@ public class ActivityStepDefinitions extends ListTestBase {
         commonSteps.request(HttpMethod.GET, ACTIVITIES_PATH + id);
     }
 
-    @When("^activity list is requested$")
+    @When("^activities list is requested$")
     public void getActivities() {
         commonSteps.request(HttpMethod.GET, ACTIVITIES_PATH);
     }

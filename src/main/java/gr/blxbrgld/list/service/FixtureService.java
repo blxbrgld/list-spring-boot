@@ -52,6 +52,16 @@ public interface FixtureService {
     Subtitles subtitlesFixture(String title);
 
     /**
+     * Build a {@link User} and the {@link Fixture} related with it
+     * @param username The username
+     * @param password The password
+     * @param email The email
+     * @param role The role
+     * @return {@link User}
+     */
+    User userFixture(String username, String password, String email, String role);
+
+    /**
      * Delete fixtures
      */
     void deleteFixtures();

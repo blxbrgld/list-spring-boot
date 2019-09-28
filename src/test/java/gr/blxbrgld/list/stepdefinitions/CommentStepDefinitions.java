@@ -44,7 +44,7 @@ public class CommentStepDefinitions extends ListTestBase {
         commonSteps.request(HttpMethod.GET, COMMENTS_PATH + id);
     }
 
-    @When("^comment list is requested$")
+    @When("^comments list is requested$")
     public void getComments() {
         commonSteps.request(HttpMethod.GET, COMMENTS_PATH);
     }

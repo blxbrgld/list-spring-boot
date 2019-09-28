@@ -77,7 +77,7 @@ public @interface TitleNotDuplicate {
         }
 
         /**
-         * Check if the given object is one of the allowed entities and if it is and it exists return it's id
+         * Check if the given object is one of the allowed entities and if it is and it's title exists return the existing id
          * @param object {@link Object}
          * @return The entity's id or empty optional if it does not exist
          * @throws Exception thrown if the given object has not one of the allowed types

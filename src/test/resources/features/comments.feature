@@ -11,7 +11,7 @@ Feature: Endpoints related to comments
     And the response contains key title with value Documentary
 
   Scenario: Request for comments list
-    When comment list is requested
+    When comments list is requested
     Then the http response status code is 200
     # 7'' is a good candidates for assertion when list is requested by title in ASC order
     And the response list contains entry with key title and value 7''
@@ -49,7 +49,7 @@ Feature: Endpoints related to comments
     When request to delete comment with title Blaxploitation
     Then the http response status code is 400
 
-  @wip
+  @wip #TODO Testing
   Scenario: Request to delete a comment that is related with some items
 
   Scenario: Request to delete a comment

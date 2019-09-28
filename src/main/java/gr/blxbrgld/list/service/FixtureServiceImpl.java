@@ -44,6 +44,9 @@ public class FixtureServiceImpl implements FixtureService {
     @Autowired
     private SubtitlesDao subtitlesDao;
 
+    @Autowired
+    private UserDao userDao;
+
     /**
      * {@inheritDoc}
      */
@@ -133,6 +136,26 @@ public class FixtureServiceImpl implements FixtureService {
      * {@inheritDoc}
      */
     @Override
+    public User userFixture(String username, String password, String email, String role) {
+        try {
+            User user = User
+                .builder()
+                .username(username)
+                .password(password)
+                .email(email)
+                .role(role)
+                .build();
+            fixtureDao.persist(new Fixture(FixtureType.USER, objectMapper.writeValueAsString(user)));
+            return user;
+        } catch (Exception exception) {
+            throw new RuntimeException("User fixture exception.");
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     @Scheduled(cron = "0 0/30 * * * ?") //TODO Delete only stale fixtures?
     public void deleteFixtures() {
         List<Fixture> fixtures = fixtureDao.getAll();
@@ -163,6 +186,10 @@ public class FixtureServiceImpl implements FixtureService {
                     case SUBTITLES:
                         Subtitles subtitles = objectMapper.readValue(fixture.getFixture(), Subtitles.class);
                         subtitlesDao.deleteByTitle(subtitles.getTitle());
+                        break;
+                    case USER:
+                        User user = objectMapper.readValue(fixture.getFixture(), User.class);
+                        userDao.deleteByUsername(user.getUsername());
                         break;
                     default:
                         log.error("Unknown fixture type {}.", fixture.getType());

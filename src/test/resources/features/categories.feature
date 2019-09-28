@@ -101,7 +101,7 @@ Feature: Endpoints related to categories
     And the response contains key title with value Devices
     And the response list contains entry with key categories.title and value Furniture
 
-  @wip
+  @wip #TODO Testing
   Scenario: Request to delete a category that is related with some items
 
   Scenario: Request to delete a category

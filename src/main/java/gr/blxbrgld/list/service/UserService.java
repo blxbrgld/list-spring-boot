@@ -2,7 +2,6 @@ package gr.blxbrgld.list.service;
 
 import gr.blxbrgld.list.enums.Order;
 import gr.blxbrgld.list.model.User;
-import org.springframework.validation.Errors;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,18 +15,8 @@ public interface UserService {
 	/**
 	 * Persist User Object
 	 * @param user User Object
-	 * @param password User's Password
-	 * @param errors BindingResult Errors Of User Form
 	 */
-	void persistUser(User user, String password, Errors errors);
-	
-	/**
-	 * Merge User Object
-	 * @param user User Object
-	 * @param password User's Password
-	 * @param errors BindingResult Errors Of User Form
-	 */
-	void mergeUser(User user, String password, Errors errors);
+	void persistOrMergeUser(User user);
 	
 	/**
 	 * Get All User Objects
@@ -45,15 +34,15 @@ public interface UserService {
 	Optional<User> getUser(Integer id);
 
 	/**
+	 * Get user by username
+	 * @param username The username
+	 * @return {@link User}
+	 */
+	Optional<User> getUser(String username);
+
+	/**
 	 * Delete User By Id
 	 * @param id The Id
 	 */
 	void deleteUser(Integer id);
-	
-	/**
-	 * Get User Object Given It's Username
-	 * @param username User's Username
-	 * @return User Object
-	 */
-	Optional<User> getUserByUsername(String username);
 }

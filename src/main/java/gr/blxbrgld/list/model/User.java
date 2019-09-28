@@ -1,8 +1,14 @@
 package gr.blxbrgld.list.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import gr.blxbrgld.list.jackson.UserDeserializer;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -23,6 +29,7 @@ import java.util.Calendar;
  */
 @Getter
 @Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "Users")
 @NamedQueries({
@@ -30,6 +37,8 @@ import java.util.Calendar;
 	@NamedQuery(name = "findUserByEmail", query = "FROM User WHERE email = :email"),
 	@NamedQuery(name = "findUsersByRole", query = "FROM User WHERE role = :role")
 })
+@JsonPropertyOrder({ "id", "username", "password", "email", "role", "dateUpdated" })
+@JsonDeserialize(using = UserDeserializer.class)
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -38,31 +47,58 @@ public class User implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
 	@GenericGenerator(name = "native", strategy = "native")
 	@Column(name = "Id")
+	@ApiModelProperty(readOnly = true, position = 0)
 	private Integer id;
 
 	@NotNull
 	@Length(min = 3, max = 45)
 	@Column(name = "Username")
+	@ApiModelProperty(required = true, allowableValues = "range[3, 45]", position = 1)
 	private String username;
+
+	@NotNull
+	@Length(min = 3, max = 60)
+	@Column(name = "Password")
+	@ApiModelProperty(required = true, allowableValues = "range[3, 60]", position = 2)
+	private String password; //TODO It should be hidden when read
 
 	@Email
 	@NotNull
 	@Length(min = 3, max = 45)
 	@Column(name = "Email")
+	@ApiModelProperty(required = true, allowableValues = "range[3, 45]", example = "johnDoe@gmail.com", position = 3)
 	private String email;
 	
 	@ManyToOne
 	@JoinColumn(name = "Role", referencedColumnName = "Id", nullable = false)
+	@ApiModelProperty(required = true, dataType = "java.lang.String", example = "Administrator", position = 4)
 	private Role role;
 
-	@NotNull
 	@Column(name = "Enabled", columnDefinition = "TINYINT(1)")
+	@JsonIgnore
+	@ApiModelProperty(hidden = true)
 	private boolean enabled = true;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
 	@Column(name = "DateUpdated")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+	@ApiModelProperty(dataType = "java.lang.String", readOnly = true, position = 5)
 	private Calendar dateUpdated;
+
+	/**
+	 * User builder
+	 * @param username The username
+	 * @param password The password
+	 * @param email The email
+	 * @param role The role
+	 */
+	@Builder
+	public User(String username, String password, String email, String role) {
+		this.username = username;
+		this.password = password;
+		this.email = email;
+		this.role = Role.builder().title(role).build();
+	}
 
 	/**
 	 * {@inheritDoc}

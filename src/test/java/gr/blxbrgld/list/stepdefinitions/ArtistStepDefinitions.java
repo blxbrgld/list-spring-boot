@@ -45,12 +45,12 @@ public class ArtistStepDefinitions extends ListTestBase {
         commonSteps.request(HttpMethod.GET, ARTISTS_PATH + id);
     }
 
-    @When("^artist list is requested$")
+    @When("^artists list is requested$")
     public void getArtists() {
         commonSteps.request(HttpMethod.GET, ARTISTS_PATH);
     }
 
-    @When("^artist list is requested in descending order$")
+    @When("^artists list is requested in descending order$")
     public void getArtistsDescending() {
         commonSteps.request(
             HttpMethod.GET,

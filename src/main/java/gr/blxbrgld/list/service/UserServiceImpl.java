@@ -1,9 +1,11 @@
 package gr.blxbrgld.list.service;
 
+import gr.blxbrgld.list.dao.hibernate.RoleDao;
 import gr.blxbrgld.list.dao.hibernate.UserDao;
 import gr.blxbrgld.list.enums.Order;
 import gr.blxbrgld.list.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
 
@@ -22,30 +24,18 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private UserDao userDao;
 
-    /**
-     * {@inheritDoc}
-     */
-	@Override
-	public void persistUser(User user, String password, Errors errors) {
-		validateUsername(user, errors);
-		validateEmail(user, errors);
-		boolean valid = !errors.hasErrors();
-		if(valid) {
-            userDao.persist(user, password);
-        }
-	}
+	@Autowired
+	private RoleDao roleDao;
 
     /**
      * {@inheritDoc}
      */
 	@Override
-	public void mergeUser(User user, String password, Errors errors) {
-		validateUsername(user, errors);
-		validateEmail(user, errors);
-		boolean valid = !errors.hasErrors();
-		if(valid) {
-            userDao.merge(user, password);
-        }
+	public void persistOrMergeUser(User user) {
+		String encodedPassword = user.getPassword(); //TODO bCryptPasswordEncoder.encode
+		user.setPassword(encodedPassword);
+		user.setRole(roleDao.getByTitle(user.getRole().getTitle()).get());
+		userDao.persistOrMerge(user);
 	}
 
     /**
@@ -64,20 +54,20 @@ public class UserServiceImpl implements UserService {
 		return userDao.get(id);
 	}
 
-    /**
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Optional<User> getUser(String username) {
+		return userDao.findByUsername(username);
+	}
+
+	/**
      * {@inheritDoc}
      */
 	@Override
 	public void deleteUser(Integer id) {
 		userDao.deleteById(id);
-	}
-	
-	/**
-     * {@inheritDoc}
-	 */
-    @Override
-	public Optional<User> getUserByUsername(String username) {
-		return userDao.findByUsername(username);		
 	}
 	
 	/**

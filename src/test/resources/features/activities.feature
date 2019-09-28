@@ -13,7 +13,7 @@ Feature: Endpoints related to activities
     And the response contains key title with value Actor
 
   Scenario: Request for activities list
-    When activity list is requested
+    When activities list is requested
     Then the http response status code is 200
     And title contains in any order Actor,Author,Conductor,Director,Musician
 
@@ -25,7 +25,7 @@ Feature: Endpoints related to activities
   Scenario: Request to create activity
     When request to create activity with title Cameraman
     Then the http response status code is 201
-    When activity list is requested
+    When activities list is requested
     Then the http response status code is 200
     And the response list contains entry with key title and value Cameraman
 
@@ -43,7 +43,7 @@ Feature: Endpoints related to activities
     Given activity with title Cameraman exists
     When request to update activity with title Cameraman to Photographer
     Then the http response status code is 204
-    When activity list is requested
+    When activities list is requested
     Then the http response status code is 200
     And the response list contains entry with key title and value Photographer
 
@@ -51,14 +51,14 @@ Feature: Endpoints related to activities
     When request to delete activity with title Cameraman
     Then the http response status code is 400
 
-  @wip
+  @wip #TODO Testing
   Scenario: Request to delete an activity that is related with some items
 
   Scenario: Request to delete an activity
     Given activity with title Cameraman exists
     When request to delete activity with title Cameraman
     Then the http response status code is 204
-    When activity list is requested
+    When activities list is requested
     Then the http response status code is 200
     And the response list does not contain entry with key title and value Cameraman
 

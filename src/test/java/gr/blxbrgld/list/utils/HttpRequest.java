@@ -3,7 +3,9 @@ package gr.blxbrgld.list.utils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import gr.blxbrgld.list.jackson.CategorySerializer;
+import gr.blxbrgld.list.jackson.UserSerializer;
 import gr.blxbrgld.list.model.Category;
+import gr.blxbrgld.list.model.User;
 import io.restassured.config.ObjectMapperConfig;
 import io.restassured.config.RestAssuredConfig;
 import io.restassured.http.Header;
@@ -47,6 +49,7 @@ public class HttpRequest {
                 ObjectMapper objectMapper = new ObjectMapper();
                 SimpleModule module = new SimpleModule("E2E");
                 module.addSerializer(Category.class, new CategorySerializer());
+                module.addSerializer(User.class, new UserSerializer());
                 objectMapper.registerModule(module);
                 return objectMapper;
             }

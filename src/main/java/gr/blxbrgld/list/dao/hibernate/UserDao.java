@@ -11,20 +11,6 @@ import java.util.Optional;
  * @author blxbrgld
  */
 public interface UserDao extends AbstractDao<User> {
-
-	/**
-	 * Password-Aware persist Method For User
-	 * @param user {@link User}
-	 * @param password User's Password To Persist
-	 */
-	void persist(User user, String password);
-	
-	/**
-	 * Password-Aware merge Method For User
-	 * @param user {@link User}
-	 * @param password User's Password To Merge
-	 */
-	void merge(User user, String password);
 	
 	/**
 	 * Find User By Username
@@ -46,7 +32,13 @@ public interface UserDao extends AbstractDao<User> {
 	 * @return List Of {@link User}
 	 */
 	List<User> findByRole(Role role);
-	
+
+	/**
+	 * Delete user by username
+	 * @param username The username
+	 */
+	void deleteByUsername(String username);
+
 	/**
 	 * Check If Users Having The Given Role Exist
 	 * @param role {@link Role}

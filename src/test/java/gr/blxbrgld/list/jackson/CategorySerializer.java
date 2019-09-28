@@ -13,9 +13,6 @@ import java.io.IOException;
  */
 public class CategorySerializer extends StdSerializer<Category> {
 
-    private static final String TITLE_ATTRIBUTE = "title";
-    private static final String PARENT_ATTRIBUTE = "parent";
-
     /**
      * Constructor
      */
@@ -37,8 +34,8 @@ public class CategorySerializer extends StdSerializer<Category> {
     @Override
     public void serialize(Category category, JsonGenerator generator, SerializerProvider provider) throws IOException {
         generator.writeStartObject();
-        generator.writeStringField(TITLE_ATTRIBUTE, category.getTitle());
-        generator.writeStringField(PARENT_ATTRIBUTE, category.getParent()!=null ? category.getParent().getTitle() : null);
+        generator.writeStringField("title", category.getTitle());
+        generator.writeStringField("parent", category.getParent()!=null ? category.getParent().getTitle() : null);
         generator.writeEndObject();
     }
 }

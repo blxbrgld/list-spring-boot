@@ -11,11 +11,11 @@ Feature: Endpoints related to artists
     And the response contains key title with value Nick Cave
 
   Scenario: Request for artist list
-    When artist list is requested
+    When artists list is requested
     Then the http response status code is 200
     # !!! is a band (aka chk-chk-chk). Safe assertion for the ordering scenario
     And the response contains key [0].title with value !!!
-    When artist list is requested in descending order
+    When artists list is requested in descending order
     Then the http response status code is 200
     And the response does not contain key [0].title with value !!!
 
@@ -53,7 +53,7 @@ Feature: Endpoints related to artists
     When request to delete artist with title Britney Spears
     Then the http response status code is 400
 
-  @wip
+  @wip #TODO Testing
   Scenario: Request to delete an artist that is related with some items
 
   Scenario: Request to delete an artist
