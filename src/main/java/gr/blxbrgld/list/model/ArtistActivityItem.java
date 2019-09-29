@@ -1,6 +1,9 @@
 package gr.blxbrgld.list.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -35,25 +38,33 @@ public class ArtistActivityItem implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
 	@GenericGenerator(name = "native", strategy = "native")
 	@Column(name = "Id")
+	@ApiModelProperty(hidden = true)
 	private Integer id;
 
 	//@IndexedEmbedded //TODO Hibernate Search
 	@ManyToOne
 	@JoinColumn(name = "IdArtist", referencedColumnName = "Id", nullable = false)
+	@JsonProperty("artist")
+	@ApiModelProperty(name = "artist", dataType = "java.lang.String", position = 0)
 	private Artist idArtist;
 	
 	//@ContainedIn //TODO Hibernate Search
 	@ManyToOne
 	@JoinColumn(name = "IdItem", referencedColumnName = "Id", nullable = false)
+	@JsonBackReference
+	@ApiModelProperty(hidden = true)
 	private Item idItem;
 	
 	@ManyToOne
 	@JoinColumn(name = "IdActivity", referencedColumnName = "Id", nullable = false)
+	@JsonProperty("activity")
+	@ApiModelProperty(name = "activity", dataType = "java.lang.String", position = 1)
 	private Activity idActivity;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
 	@Column(name = "DateUpdated")
+	@JsonIgnore
+	@ApiModelProperty(hidden = true)
 	private Calendar dateUpdated;
 
 	/**

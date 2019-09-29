@@ -1,6 +1,6 @@
 package gr.blxbrgld.list.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
@@ -48,8 +48,8 @@ public class Role implements Serializable {
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "DateUpdated")
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-	@ApiModelProperty(dataType = "java.lang.String", readOnly = true, position = 2)
+	@JsonIgnore
+	@ApiModelProperty(hidden = true)
 	private Calendar dateUpdated;
 
 	/**

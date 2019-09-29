@@ -1,6 +1,6 @@
 package gr.blxbrgld.list.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Getter;
 import lombok.Setter;
@@ -41,8 +41,8 @@ public class Publisher implements Serializable {
     private String title;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(name = "DateUpdated")
+    @JsonIgnore
     private Calendar dateUpdated;
 
     /**

@@ -1,7 +1,10 @@
 package gr.blxbrgld.list.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import gr.blxbrgld.list.validators.FileValid;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -78,70 +81,78 @@ public class Item implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
 	@GenericGenerator(name = "native", strategy = "native")
 	@Column(name = "Id")
+	@ApiModelProperty(readOnly = true, position = 0)
 	private Integer id;
 
-	//TODO Hibernate Search
-	/*
-	@Fields({
-		@Field,
-		@Field(name = "sortTitle", analyze = Analyze.NO)
-	})
-	*/
+	//@Fields({ @Field, @Field(name = "sortTitle", analyze = Analyze.NO) }) //TODO Hibernate Search
 	@NotNull
 	@Length(min = 1, max = 255)
 	@Column(name = "TitleEng")
+	@ApiModelProperty(required = true, allowableValues = "range[1, 255]", position = 1)
 	private String titleEng;
 	
 	//@Field //TODO Hibernate Search
 	@Length(max = 255)
 	@Column(name = "TitleEll")
+	@ApiModelProperty(allowableValues = "range[1, 255]", position = 2)
 	private String titleEll;
 	
 	@NotNull
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "Category", referencedColumnName = "Id", nullable = false)
+	@ApiModelProperty(required = true, dataType = "java.lang.String", allowableValues = "Popular Music,Classical Music,Greek Music,DVD Films,DivX Films,Books", position = 3)
 	private Category category;
 
 	@ManyToOne
 	@JoinColumn(name = "Publisher", referencedColumnName = "Id")
+	@ApiModelProperty(dataType = "java.lang.String", position = 4)
 	private Publisher publisher;
 	
 	@Length(max = 45)
 	@Column(name = "photoPath")
+	@ApiModelProperty(hidden = true)
 	private String photoPath;
 
 	@Transient
 	@FileValid(message = "{gr.blxbrgld.list.validators.FileValid.message}")
+	@ApiModelProperty(hidden = true) //TODO Expose photo
 	private CommonsMultipartFile photo;
 	
 	//@Field //TODO Hibernate Search
 	@Lob
 	@Column(name = "Description", columnDefinition = "text")
+	@ApiModelProperty(position = 5)
 	private String description;
 	
 	@Range(min = 1900, max = 2100)
 	@Column(name = "Year")
+	@ApiModelProperty(position = 6)
 	private Integer year;
 	
 	//@Field //TODO Hibernate Search
 	//@NumericField //TODO Hibernate Search
 	@Column(name = "Rating")
+	@ApiModelProperty(position = 7)
 	private Integer rating;
 	
 	@ManyToOne
 	@JoinColumn(name = "Subtitles")
+	@ApiModelProperty(dataType = "java.lang.String", allowableValues = "Greek Subtitles,English Subtitles,No Subtitles", position = 8)
 	private Subtitles subtitles;
 	
 	@Range(min = 1, max = 100)
 	@Column(name = "Discs")
+	@ApiModelProperty(position = 9)
 	private Integer discs;
 	
 	@Min(1)
 	@Column(name = "Place")
+	@ApiModelProperty(position = 10)
 	private Integer place;
 
 	@Min(10)
 	@Column(name = "Pages")
+	@ApiModelProperty(position = 11)
 	private Integer pages;
 	
 	//@Field(name = "sortArtist", analyze = Analyze.NO) //TODO Hibernate Search
@@ -150,22 +161,30 @@ public class Item implements Serializable {
 	@OneToMany(mappedBy = "idItem", fetch = FetchType.EAGER, cascade = { CascadeType.REMOVE })
 	@OrderBy(clause = "id ASC")
 	@Fetch(FetchMode.SELECT)
+	@JsonProperty("artists")
+	@JsonManagedReference
+	@ApiModelProperty(position = 12)
 	private List<ArtistActivityItem> artistActivityItems;
 	
 	@OneToMany(mappedBy = "idItem", fetch = FetchType.EAGER, cascade = { CascadeType.REMOVE })
 	@OrderBy(clause = "id ASC")
 	@Fetch(FetchMode.SELECT)
+	@JsonProperty("comments")
+	@JsonManagedReference
+	@ApiModelProperty(position = 13)
 	private Set<CommentItem> commentItems;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
 	@Column(name = "DateUpdated")
+	@JsonIgnore
+	@ApiModelProperty(hidden = true)
 	private Calendar dateUpdated;
 
 	/**
 	 * Get Comment Titles From commentItems Separated With ' | ' Characters
 	 * @return String Of Item's Comment Titles
 	 */
+	@JsonIgnore
 	public String getCommentsString() {
 		return commentItems.stream()
 			.map(c -> c.getIdComment().getTitle())
@@ -176,6 +195,7 @@ public class Item implements Serializable {
 	 * Get Artist Titles From artistActivityItems Separated With ' | ' Characters. 'Actor' Activity Is Excluded
 	 * @return String Of Item's Artist Titles
 	 */
+	@JsonIgnore
 	public String getArtistsString() {
 		return artistActivityItems.stream()
 			.filter(a -> !"Actor".equals(a.getIdActivity().getTitle()))
