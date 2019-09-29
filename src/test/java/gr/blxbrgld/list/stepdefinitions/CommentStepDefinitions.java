@@ -15,7 +15,7 @@ import java.util.Optional;
 
 /**
  * Comment step definitions
- * @author npapadopoulos
+ * @author blxbrgld
  */
 public class CommentStepDefinitions extends ListTestBase {
 

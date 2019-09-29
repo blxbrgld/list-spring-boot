@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  * Api Error
- * @author npapadopoulos
+ * @author blxbrgld
  */
 @Data
 public class ApiError {

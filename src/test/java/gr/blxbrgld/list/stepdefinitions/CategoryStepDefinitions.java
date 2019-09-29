@@ -16,7 +16,7 @@ import java.util.Optional;
 
 /**
  * Category Step Definitions
- * @author npapadopoulos
+ * @author blxbrgld
  */
 public class CategoryStepDefinitions extends ListTestBase {
 

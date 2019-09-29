@@ -15,7 +15,7 @@ import java.util.Optional;
 
 /**
  * Activity step definitions
- * @author npapadopoulos
+ * @author blxbrgld
  */
 public class ActivityStepDefinitions extends ListTestBase {
 

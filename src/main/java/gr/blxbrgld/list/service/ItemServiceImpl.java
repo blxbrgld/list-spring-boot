@@ -30,32 +30,21 @@ public class ItemServiceImpl implements ItemService {
      * {@inheritDoc}
      */
 	@Override
-	public void persistItem(Item item, Errors errors) {
-		validateArtistActivityItems(item, errors);
-		validateCommentItems(item, errors);
-		validateSubtitles(item, errors);
-		validateYear(item, errors);
-		validatePublisher(item, errors);
-		boolean valid = !errors.hasErrors();
-		if(valid) {
-            itemDao.persist(item);
-        }
+	public void persistOrMergeItem(Item item) {
+		//validateArtistActivityItems(item, errors); //TODO Validator
+		//validateCommentItems(item, errors); //TODO Validator
+		//validateSubtitles(item, errors); //TODO Validator
+		//validateYear(item, errors); //TODO Validator
+		//validatePublisher(item, errors); //TODO Validator
+		itemDao.persistOrMerge(item);
 	}
 
-    /**
-     * {@inheritDoc}
-     */
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public void mergeItem(Item item, Errors errors) {
-		validateArtistActivityItems(item, errors);
-		validateCommentItems(item, errors);
-		validateSubtitles(item, errors);
-		validateYear(item, errors);
-		validatePublisher(item, errors);
-		boolean valid = !errors.hasErrors();
-		if(valid) {
-            itemDao.merge(item);
-        }
+	public Optional<Item> getItem(Integer id) {
+		return itemDao.get(id);
 	}
 
     /**
@@ -94,22 +83,6 @@ public class ItemServiceImpl implements ItemService {
      * {@inheritDoc}
      */
 	@Override
-	public void initializeLucene(boolean synchronously) {
-		itemDao.lucene(synchronously);
-	}
-
-    /**
-     * {@inheritDoc}
-     */
-	@Override
-	public Optional<Item> getItem(Integer id) {
-		return itemDao.get(id);
-	}
-
-    /**
-     * {@inheritDoc}
-     */
-	@Override
 	public void deleteItem(Item item) {
 		itemDao.delete(item);
 	}
@@ -128,22 +101,6 @@ public class ItemServiceImpl implements ItemService {
 	@Override
 	public Long countItemsHavingCategory(String title) {
 		return itemDao.countItems(title);
-	}
-
-    /**
-     * {@inheritDoc}
-     */
-	@Override
-	public Item findLastDateHavingCategory(String title, boolean parent) {
-		return itemDao.findLastDate(title, parent);
-	}
-
-    /**
-     * {@inheritDoc}
-     */
-	@Override
-	public Integer findNextPlaceHavingParent(String parent) {
-		return itemDao.findNextPlace(parent);
 	}
 	
 	/**

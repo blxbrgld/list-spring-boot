@@ -41,12 +41,6 @@ public interface ItemDao extends AbstractDao<Item> {
 	ImmutablePair<Integer, List<Item>> search(String searchFor, String searchIn, String attribute, Order order, int first, int size);
 	
 	/**
-	 * Re-Build Lucene Index From Scratch
-	 * @param synchronously Index Synchronously or Asynchronously
-	 */
-	void lucene(boolean synchronously);
-	
-	/**
 	 * Check If Items Having The Given Category Exist
 	 * @param category {@link Category}
 	 * @return TRUE or FALSE

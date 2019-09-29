@@ -25,7 +25,7 @@ import java.util.Calendar;
 	@NamedQuery(name = "findCommentItemsByComment", query = "FROM CommentItem WHERE idComment = :comment"),
 	@NamedQuery(name = "deleteCommentItemByItem", query = "DELETE FROM CommentItem WHERE idItem = :item")
 })
-public class CommentItem implements Serializable { //TODO Is This Entity Really Needed?
+public class CommentItem implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

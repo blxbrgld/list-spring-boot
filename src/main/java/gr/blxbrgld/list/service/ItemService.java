@@ -5,7 +5,6 @@ import gr.blxbrgld.list.model.Artist;
 import gr.blxbrgld.list.model.Category;
 import gr.blxbrgld.list.model.Item;
 import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.springframework.validation.Errors;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,16 +18,15 @@ public interface ItemService {
 	/**
 	 * Persist Item Object
 	 * @param item Item Object
-	 * @param errors BindingResult Errors Of Item Form
 	 */
-	void persistItem(Item item, Errors errors);
-	
+	void persistOrMergeItem(Item item);
+
 	/**
-	 * Merge Item Object
-	 * @param item Item Object
-	 * @param errors BindingResult Errors Of Item Form
+	 * Get Item Object Given It's Id
+	 * @param id Item's Id
+	 * @return Item Object
 	 */
-	void mergeItem(Item item, Errors errors);
+	Optional<Item> getItem(Integer id);
 
 	/**
 	 * Get All Item Objects
@@ -69,19 +67,6 @@ public interface ItemService {
 	ImmutablePair<Integer, List<Item>> searchItems(String searchFor, String searchIn, String attribute, Order order, int first, int size);
 	
 	/**
-	 * Re-Build Lucene Index From Scratch
-	 * @param synchronously Index Synchronously or Asynchronously
-	 */
-	void initializeLucene(boolean synchronously);
-	
-	/**
-	 * Get Item Object Given It's Id
-	 * @param id Item's Id
-	 * @return Item Object
-	 */
-	Optional<Item> getItem(Integer id);
-	
-	/**
 	 * Delete Item Object
 	 * @param item Item Object
 	 */
@@ -99,19 +84,4 @@ public interface ItemService {
 	 * @return Count Of Items
 	 */
 	Long countItemsHavingCategory(String title);
-	
-	/**
-	 * Find Last Item Having The Given Category
-	 * @param title Category's Title
-	 * @param parent boolean Indicating If The Given Category Is Parent Or Not
-	 * @return Item Object
-	 */
-	Item findLastDateHavingCategory(String title, boolean parent);
-	
-	/**
-	 * Find Next Available Place For Items With The Given Category As Parent Category
-	 * @param parent Parent Category
-	 * @return Next Available Place
-	 */
-	Integer findNextPlaceHavingParent(String parent);
 }

@@ -124,25 +124,6 @@ public class ItemDaoImpl extends AbstractDaoImpl<Item> implements ItemDao {
      * {@inheritDoc}
      */
 	@Override
-	public void lucene(boolean synchronously) { //TODO Hibernate Search
-		/*
-		FullTextSession fullTextSession = Search.getFullTextSession(getSession());
-		if(synchronously) {
-            try {
-                fullTextSession.createIndexer().startAndWait();
-            } catch(Exception exception) {
-                log.error("Exception", exception);
-            }
-        } else {
-			fullTextSession.createIndexer().start();
-		}
-		*/
-	}
-
-    /**
-     * {@inheritDoc}
-     */
-	@Override
 	public boolean havingCategoryExists(Category category) {
 		Query query = getSession().getNamedQuery("findItemsByCategory");
 		query.setParameter("category", category);

@@ -27,7 +27,7 @@ import java.util.Calendar;
 	@NamedQuery(name = "deleteArtistActivityItemByItem", query = "DELETE FROM ArtistActivityItem WHERE idItem = :item"),
 	@NamedQuery(name = "countItemsHavingArtist", query = "SELECT COUNT(*) FROM ArtistActivityItem WHERE idArtist = :artist"),
 })
-public class ArtistActivityItem implements Serializable { //TODO Is This Entity Really Needed?
+public class ArtistActivityItem implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
