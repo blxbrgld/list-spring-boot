@@ -80,8 +80,30 @@ Feature: Endpoints related to users
       | mickharvey | 123456789 | mickharvey@gmail.com | Viewer |
     Then the http response status code is 400
 
-  @wip
-  Scenario: Request to update user
+  Scenario:  Request to update user
+    Given the following users exist
+      | username   | password  | email                | role          |
+      | mickharvey | 123456789 | mickharvey@gmail.com | Administrator |
+    When request to update user with username mickharvey to
+      | username   | password  | email                | role   |
+      | mickrooney | 123456789 | mickrooney@gmail.com | Administrator |
+    Then the http response status code is 204
+    When request user mickrooney by id
+    Then the http response status code is 200
+    And the response contains key username with value mickrooney
+    And the response contains key email with value mickrooney@gmail.com
 
-  @wip
-  Scenario: Request to delete user
+  Scenario: Request to delete a user that does not exist
+    When request to delete user with username mickharvey
+    Then the http response status code is 404
+
+  Scenario: Request to delete a user
+    Given the following users exist
+      | username   | password  | email                | role          |
+      | mickharvey | 123456789 | mickharvey@gmail.com | Administrator |
+    When request to delete user with username mickharvey
+    Then the http response status code is 204
+    # Ensure that the user does not exist anymore
+    When users list is requested
+    Then the http response status code is 200
+    And username contains in any order blixabargeld

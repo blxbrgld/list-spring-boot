@@ -158,7 +158,22 @@ public class FixtureServiceImpl implements FixtureService {
     @Override
     @Scheduled(cron = "0 0/30 * * * ?") //TODO Delete only stale fixtures?
     public void deleteFixtures() {
-        List<Fixture> fixtures = fixtureDao.getAll();
+        deleteFixturesByType(FixtureType.USER);
+        deleteFixturesByType(FixtureType.ROLE);
+        //TODO The ordering should be reviewed when item fixtures are added
+        deleteFixturesByType(FixtureType.ACTIVITY);
+        deleteFixturesByType(FixtureType.ARTIST);
+        deleteFixturesByType(FixtureType.CATEGORY);
+        deleteFixturesByType(FixtureType.COMMENT);
+        deleteFixturesByType(FixtureType.SUBTITLES);
+    }
+
+    /**
+     * The entities related to the fixtures should be deleted in specific order due to foreign key relationships.
+     * @param type {@link FixtureType}
+     */
+    private void deleteFixturesByType(FixtureType type) {
+        List<Fixture> fixtures = fixtureDao.getByType(type);
         try {
             for (Fixture fixture : fixtures) {
                 // Delete the entity created
@@ -197,7 +212,7 @@ public class FixtureServiceImpl implements FixtureService {
                 // Delete the fixture
                 fixtureDao.deleteById(fixture.getId());
             }
-        } catch (Exception exception) {
+        } catch(Exception exception) {
             log.error("Exception", exception);
         }
     }

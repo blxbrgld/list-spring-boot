@@ -101,6 +101,9 @@ public class UserController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ApiOperation(value = "Delete User by Id")
     public void delete(@ApiParam(value = "The User Id", required = true) @PathVariable("id") Integer id) {
+        if(!userService.getUser(id).isPresent()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found.");
+        }
         userService.deleteUser(id);
     }
 }

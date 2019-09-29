@@ -51,8 +51,13 @@ Feature: Endpoints related to roles
     When request to delete role with title Moderator
     Then the http response status code is 400
 
-  @wip #TODO Testing
   Scenario: Request to delete a role that is related with a user
+    Given role with title Moderator exists
+    And the following users exist
+      | username   | password  | email                | role      |
+      | mickharvey | 123456789 | mickharvey@gmail.com | Moderator |
+    When request to delete role with title Moderator
+    Then the http response status code is 400
 
   Scenario: Request to delete a role
     Given role with title Moderator exists

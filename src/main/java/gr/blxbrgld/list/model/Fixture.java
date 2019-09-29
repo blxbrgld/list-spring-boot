@@ -20,6 +20,7 @@ import java.util.Calendar;
 @NoArgsConstructor
 @Entity
 @Table(name = "Fixtures")
+@NamedQuery(name = "getFixturesByType", query = "FROM Fixture WHERE type=:type")
 public class Fixture implements Serializable {
 
     private static final long serialVersionUID = 1L;

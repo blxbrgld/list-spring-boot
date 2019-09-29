@@ -75,6 +75,13 @@ public class UserStepDefinitions extends ListTestBase {
         }
     }
 
+    @When("^request to delete user with username (.*)$")
+    public void deleteUser(String username) {
+        Optional<User> user = userService.getUser(username);
+        Integer id = user.map(User::getId).orElse(-1); // The found id or an id that for sure does not exist
+        commonSteps.request(HttpMethod.DELETE, USERS_PATH + id);
+    }
+
     /**
      * Build and persist {@link User} and {@link gr.blxbrgld.list.model.Fixture} from Cucumber table input
      * @param users Cucumber table input as List Of key/value pairs
