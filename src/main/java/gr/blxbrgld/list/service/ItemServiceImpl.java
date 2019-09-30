@@ -83,8 +83,8 @@ public class ItemServiceImpl implements ItemService {
      * {@inheritDoc}
      */
 	@Override
-	public void deleteItem(Item item) {
-		itemDao.delete(item);
+	public void deleteItem(Integer id) {
+		itemDao.deleteById(id);
 	}
 
     /**

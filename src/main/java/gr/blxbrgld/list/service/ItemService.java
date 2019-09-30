@@ -67,10 +67,10 @@ public interface ItemService {
 	ImmutablePair<Integer, List<Item>> searchItems(String searchFor, String searchIn, String attribute, Order order, int first, int size);
 	
 	/**
-	 * Delete Item Object
-	 * @param item Item Object
+	 * Delete item by id
+	 * @param id The id
 	 */
-	void deleteItem(Item item);
+	void deleteItem(Integer id);
 	
 	/**
 	 * Count All Item Objects

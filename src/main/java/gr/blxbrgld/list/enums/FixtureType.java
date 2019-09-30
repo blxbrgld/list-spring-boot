@@ -10,6 +10,7 @@ public enum FixtureType {
     ARTIST,
     CATEGORY,
     COMMENT,
+    ITEM,
     ROLE,
     SUBTITLES,
     USER

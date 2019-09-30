@@ -9,12 +9,10 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.validation.Valid;
 import java.util.Optional;
 
 /**
@@ -44,5 +42,43 @@ public class ItemController {
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Item not found.");
         }
+    }
+
+    /**
+     * Create an item
+     * @param item {@link Item}
+     */
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    @ApiOperation(value = "Create Item")
+    public void create(@Valid @ApiParam(value = "Item to create", required = true) @RequestBody Item item) {
+        itemService.persistOrMergeItem(item);
+    }
+
+    /**
+     * Update an item
+     * @param id The id to update
+     * @param item {@link Item}
+     */
+    @PutMapping("{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ApiOperation(value = "Update Item")
+    public void update(@ApiParam(value = "The Item Id", required = true) @PathVariable("id") Integer id, @Valid @ApiParam(value = "Item to update", required = true) @RequestBody Item item) {
+        if(!itemService.getItem(id).isPresent()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Item not found.");
+        }
+        item.setId(id); // Set Item's Id
+        itemService.persistOrMergeItem(item);
+    }
+
+    /**
+     * Delete an item by id
+     * @param id The Id
+     */
+    @DeleteMapping("{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ApiOperation(value = "Delete Item by Id")
+    public void delete(@ApiParam(value = "The Item Id", required = true) @PathVariable("id") Integer id) {
+        itemService.deleteItem(id);
     }
 }

@@ -65,7 +65,6 @@ public abstract class AbstractDaoImpl<T> implements AbstractDao<T> {
 	public void persist(T t) {
         setDateUpdated(t);
 		entityManager.persist(t);
-		entityManager.flush(); // Flush To Get Id Of Object Persisted //TODO Is This Needed?
 	}
 	
 	/**

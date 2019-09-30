@@ -37,14 +37,12 @@ import java.util.stream.Collectors;
 @Entity
 @Table(name = "Items")
 @NamedQueries({
+	@NamedQuery(name = "findItemByTitleEng", query = "FROM Item WHERE titleEng = :titleEng"),
 	@NamedQuery(name = "findItemsByCategory", query = "FROM Item WHERE category = :category OR category.parent = :category"),
 	@NamedQuery(name = "findItemsByArtist", query = "SELECT DISTINCT i FROM Item i, IN (i.artistActivityItems) c WHERE c.idArtist = :artist ORDER BY i.titleEng"),
 	@NamedQuery(name = "findItemsBySubtitles", query = "FROM Item WHERE subtitles = :subtitles"),
 	@NamedQuery(name = "findItemsByPublisher", query = "FROM Item WHERE publisher = :publisher"),
-	@NamedQuery(name = "countItemsHavingCategory", query = "SELECT COUNT(*) FROM Item WHERE category.title = :title"),
-	@NamedQuery(name = "findLastItemHavingCategory", query = "FROM Item WHERE category.title = :title ORDER BY dateUpdated DESC"),
-	@NamedQuery(name = "findLastItemHavingParentCategory", query = "FROM Item WHERE category.parent.title = :title ORDER BY dateUpdated DESC"),
-	@NamedQuery(name = "findNextPlaceHavingParent", query = "SELECT max(place) + 1 FROM Item WHERE category.parent.title = :parent")
+	@NamedQuery(name = "countItemsHavingCategory", query = "SELECT COUNT(*) FROM Item WHERE category.title = :title")
 })
 //TODO Hibernate Search
 /*
@@ -115,6 +113,7 @@ public class Item implements Serializable {
 
 	@Transient
 	@FileValid(message = "{gr.blxbrgld.list.validators.FileValid.message}")
+	@JsonIgnore
 	@ApiModelProperty(hidden = true) //TODO Expose photo
 	private CommonsMultipartFile photo;
 	

@@ -164,24 +164,13 @@ public class ItemDaoImpl extends AbstractDaoImpl<Item> implements ItemDao {
 		return (Long) query.uniqueResult();
 	}
 
-    /**
-     * {@inheritDoc}
-     */
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public Item findLastDate(String title, boolean parent) {
-		Query query = parent ? getSession().getNamedQuery("findLastItemHavingParentCategory") : getSession().getNamedQuery("findLastItemHavingCategory");
-		query.setParameter("title", title);
-		query.setMaxResults(1);
-		return (Item) query.uniqueResult();
-	}
-
-    /**
-     * {@inheritDoc}
-     */
-	@Override
-	public Integer findNextPlace(String parent) {
-		Query query = getSession().getNamedQuery("findNextPlaceHavingParent");
-		query.setParameter("parent", parent);
-		return (Integer) query.uniqueResult();
+	public void deleteByTitleEng(String titleEng) {
+		Query query = getSession().getNamedQuery("findItemByTitleEng");
+		query.setParameter("titleEng", titleEng);
+		delete((Item) query.uniqueResult());
 	}
 }

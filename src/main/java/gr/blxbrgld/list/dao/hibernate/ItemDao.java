@@ -67,19 +67,10 @@ public interface ItemDao extends AbstractDao<Item> {
 	 * @return Count Of Items
 	 */
 	Long countItems(String title);
-	
+
 	/**
-	 * Find Last Created Item Having The Given Category
-	 * @param title Category's Title
-	 * @param parent Boolean Indicating If The Given Category Is A Parent Category Or Not
-	 * @return Item Object
+	 * Delete an item given it's english title
+	 * @param titleEng The english title
 	 */
-	Item findLastDate(String title, boolean parent);
-	
-	/**
-	 * Find Next Available Place For Items With The Given Parent Category
-	 * @param parent Parent Category's Title
-	 * @return Next Available Place
-	 */
-	Integer findNextPlace(String parent);
+	void deleteByTitleEng(String titleEng);
 }

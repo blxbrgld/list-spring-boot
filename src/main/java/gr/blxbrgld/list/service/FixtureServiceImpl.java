@@ -39,6 +39,9 @@ public class FixtureServiceImpl implements FixtureService {
     private CommentDao commentDao;
 
     @Autowired
+    private ItemDao itemDao;
+
+    @Autowired
     private RoleDao roleDao;
 
     @Autowired
@@ -160,7 +163,7 @@ public class FixtureServiceImpl implements FixtureService {
     public void deleteFixtures() {
         deleteFixturesByType(FixtureType.USER);
         deleteFixturesByType(FixtureType.ROLE);
-        //TODO The ordering should be reviewed when item fixtures are added
+        deleteFixturesByType(FixtureType.ITEM);
         deleteFixturesByType(FixtureType.ACTIVITY);
         deleteFixturesByType(FixtureType.ARTIST);
         deleteFixturesByType(FixtureType.CATEGORY);
@@ -179,32 +182,28 @@ public class FixtureServiceImpl implements FixtureService {
                 // Delete the entity created
                 switch (fixture.getType()) {
                     case ACTIVITY:
-                        Activity activity = objectMapper.readValue(fixture.getFixture(), Activity.class);
-                        activityDao.deleteByTitle(activity.getTitle());
+                        activityDao.deleteByTitle(objectMapper.readValue(fixture.getFixture(), Activity.class).getTitle());
                         break;
                     case ARTIST:
-                        Artist artist = objectMapper.readValue(fixture.getFixture(), Artist.class);
-                        artistDao.deleteByTitle(artist.getTitle());
+                        artistDao.deleteByTitle(objectMapper.readValue(fixture.getFixture(), Artist.class).getTitle());
                         break;
                     case CATEGORY:
-                        Category category = objectMapper.readValue(fixture.getFixture(), Category.class);
-                        categoryDao.deleteByTitle(category.getTitle());
+                        categoryDao.deleteByTitle(objectMapper.readValue(fixture.getFixture(), Category.class).getTitle());
                         break;
                     case COMMENT:
-                        Comment comment = objectMapper.readValue(fixture.getFixture(), Comment.class);
-                        commentDao.deleteByTitle(comment.getTitle());
+                        commentDao.deleteByTitle(objectMapper.readValue(fixture.getFixture(), Comment.class).getTitle());
+                        break;
+                    case ITEM:
+                        itemDao.deleteByTitleEng(objectMapper.readValue(fixture.getFixture(), Item.class).getTitleEng());
                         break;
                     case ROLE:
-                        Role role = objectMapper.readValue(fixture.getFixture(), Role.class);
-                        roleDao.deleteByTitle(role.getTitle());
+                        roleDao.deleteByTitle(objectMapper.readValue(fixture.getFixture(), Role.class).getTitle());
                         break;
                     case SUBTITLES:
-                        Subtitles subtitles = objectMapper.readValue(fixture.getFixture(), Subtitles.class);
-                        subtitlesDao.deleteByTitle(subtitles.getTitle());
+                        subtitlesDao.deleteByTitle(objectMapper.readValue(fixture.getFixture(), Subtitles.class).getTitle());
                         break;
                     case USER:
-                        User user = objectMapper.readValue(fixture.getFixture(), User.class);
-                        userDao.deleteByUsername(user.getUsername());
+                        userDao.deleteByUsername(objectMapper.readValue(fixture.getFixture(), User.class).getUsername());
                         break;
                     default:
                         log.error("Unknown fixture type {}.", fixture.getType());
