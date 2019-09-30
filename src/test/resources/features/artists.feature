@@ -6,9 +6,9 @@ Feature: Endpoints related to artists
     Then the http response status code is 404
 
   Scenario: Request for an id that exists
-    When request artist Nick Cave by id
+    When request artist Nick Cave & The Bad Seeds by id
     Then the http response status code is 200
-    And the response contains key title with value Nick Cave
+    And the response contains key title with value Nick Cave & The Bad Seeds
 
   Scenario: Request for artist list
     When artists list is requested
