@@ -5,8 +5,11 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import gr.blxbrgld.list.validators.FileValid;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -25,6 +28,7 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -34,6 +38,7 @@ import java.util.stream.Collectors;
  */
 @Getter
 @Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "Items")
 @NamedQueries({
@@ -157,7 +162,7 @@ public class Item implements Serializable {
 	//@Field(name = "sortArtist", analyze = Analyze.NO) //TODO Hibernate Search
 	//@FieldBridge(impl = ArtistActivityItemBridge.class) //TODO Hibernate Search
 	//@IndexedEmbedded //TODO Hibernate Search
-	@OneToMany(mappedBy = "idItem", fetch = FetchType.EAGER, cascade = { CascadeType.REMOVE })
+	@OneToMany(mappedBy = "idItem", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@OrderBy(clause = "id ASC")
 	@Fetch(FetchMode.SELECT)
 	@JsonProperty("artists")
@@ -165,7 +170,7 @@ public class Item implements Serializable {
 	@ApiModelProperty(position = 12)
 	private List<ArtistActivityItem> artistActivityItems;
 	
-	@OneToMany(mappedBy = "idItem", fetch = FetchType.EAGER, cascade = { CascadeType.REMOVE })
+	@OneToMany(mappedBy = "idItem", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@OrderBy(clause = "id ASC")
 	@Fetch(FetchMode.SELECT)
 	@JsonProperty("comments")
@@ -178,6 +183,58 @@ public class Item implements Serializable {
 	@JsonIgnore
 	@ApiModelProperty(hidden = true)
 	private Calendar dateUpdated;
+
+	/**
+	 * Item builder
+	 * @param titleEng The english title
+	 * @param titleEll The greek title
+	 * @param category The category
+	 * @param publisher The publisher
+	 * @param description The description
+	 * @param year The year
+	 * @param rating The rating
+	 * @param subtitles The subtitles
+	 * @param discs The discs
+	 * @param place The place
+	 * @param pages The pages
+	 * @param artists The artists as a map of artist name and activity
+	 * @param comments The comments
+	 */
+	@Builder
+	public Item(String titleEng, String titleEll, String category, String publisher, String description, Integer year, Integer rating, String subtitles, Integer discs, Integer place, Integer pages, Map<String, String> artists, List<String> comments) {
+		this.titleEng = titleEng;
+		this.titleEll = titleEll;
+		this.category = Category.builder().title(category).build();
+		if(StringUtils.trimToNull(publisher)!=null) {
+			this.publisher = Publisher.builder().title(publisher).build();
+		}
+		this.description = description;
+		this.year = year;
+		this.rating = rating;
+		if(StringUtils.trimToNull(subtitles)!=null) {
+			this.subtitles = Subtitles.builder().title(subtitles).build();
+		}
+		this.discs = discs;
+		this.place = place;
+		this.pages = pages;
+		this.commentItems = comments
+			.stream()
+			.map(c -> CommentItem
+				.builder()
+				.comment(c)
+				.build()
+			)
+			.collect(Collectors.toSet());
+		this.artistActivityItems = artists.entrySet()
+			.stream()
+			.map(e -> ArtistActivityItem
+				.builder()
+				.artist(e.getKey())
+				.activity(e.getValue())
+				.build()
+			)
+			.collect(Collectors.toList());
+	}
 
 	/**
 	 * Get Comment Titles From commentItems Separated With ' | ' Characters

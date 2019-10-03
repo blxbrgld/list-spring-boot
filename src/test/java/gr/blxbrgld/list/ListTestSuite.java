@@ -12,6 +12,7 @@ import org.junit.runner.RunWith;
 @CucumberOptions(
     features = { "src/test/resources/features" },
     plugin = { "pretty" },
-    monochrome = true
+    monochrome = true,
+    tags = "@items"
 )
 public class ListTestSuite {}

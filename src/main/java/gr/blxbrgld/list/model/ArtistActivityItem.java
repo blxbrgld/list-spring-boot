@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -22,6 +24,7 @@ import java.util.Calendar;
  */
 @Getter
 @Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "ArtistsActivitiesItems")
 @NamedQueries({
@@ -67,6 +70,17 @@ public class ArtistActivityItem implements Serializable {
 	@JsonIgnore
 	@ApiModelProperty(hidden = true)
 	private Calendar dateUpdated;
+
+	/**
+	 * ArtistActivityItem builder
+	 * @param artist The artist
+	 * @param activity The activity
+	 */
+	@Builder
+	public ArtistActivityItem(String artist, String activity) {
+		this.idArtist = Artist.builder().title(artist).build();
+		this.idActivity = Activity.builder().title(activity).build();
+	}
 
 	/**
 	 * {@inheritDoc}

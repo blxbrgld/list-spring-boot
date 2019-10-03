@@ -29,6 +29,13 @@ public interface ItemService {
 	Optional<Item> getItem(Integer id);
 
 	/**
+	 * Get item by english title. The method is used only for the E2E tests
+	 * @param titleEng The english title
+	 * @return {@link Item}
+	 */
+	Optional<Item> getItem(String titleEng);
+
+	/**
 	 * Get All Item Objects
 	 * @param attribute Attribute To Order Results By
 	 * @param order Ascending or Descending Ordering

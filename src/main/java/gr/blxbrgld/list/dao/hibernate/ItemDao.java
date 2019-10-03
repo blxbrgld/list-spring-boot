@@ -5,12 +5,20 @@ import gr.blxbrgld.list.model.*;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Item's DAO Interface
  * @author blxbrgld
  */
 public interface ItemDao extends AbstractDao<Item> {
+
+	/**
+	 * Get item by english title. The method is used only for the E2E tests
+	 * @param titleEng The english title
+	 * @return {@link Item}
+	 */
+	Optional<Item> getByTitleEng(String titleEng);
 
 	/**
 	 * Get All Category's Items. No Paging Is Required because The Method Is Only Used For .XLS Export

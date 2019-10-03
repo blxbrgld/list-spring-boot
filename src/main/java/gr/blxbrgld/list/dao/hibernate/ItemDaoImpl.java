@@ -7,7 +7,9 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.NoResultException;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Item's DAO Implementation
@@ -17,6 +19,21 @@ import java.util.List;
 @Repository
 @SuppressWarnings("JpaQueryApiInspection")
 public class ItemDaoImpl extends AbstractDaoImpl<Item> implements ItemDao {
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Optional<Item> getByTitleEng(String titleEng) {
+		Query query = getSession().getNamedQuery("findItemByTitleEng");
+		query.setParameter("titleEng", titleEng);
+		try {
+			//noinspection unchecked
+			return Optional.of((Item) query.getSingleResult());
+		} catch (NoResultException exception) {
+			return Optional.empty();
+		}
+	}
 
     /**
      * {@inheritDoc}

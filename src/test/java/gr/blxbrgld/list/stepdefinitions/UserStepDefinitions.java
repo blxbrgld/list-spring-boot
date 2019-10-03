@@ -35,7 +35,7 @@ public class UserStepDefinitions extends ListTestBase {
     private static final String USERS_PATH = "/users/";
 
     @Given("^the following users exist$")
-    public void userExist(List<Map<String, String>> users) {
+    public void usersExist(List<Map<String, String>> users) {
         for(User user : fixtures(users)) {
             userService.persistOrMergeUser(user);
         }

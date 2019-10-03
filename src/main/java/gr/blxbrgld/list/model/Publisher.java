@@ -2,7 +2,9 @@ package gr.blxbrgld.list.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -22,6 +24,7 @@ import java.util.Calendar;
  */
 @Getter
 @Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "Publishers")
 @JsonPropertyOrder({ "id", "title", "dateUpdated" })
@@ -44,6 +47,15 @@ public class Publisher implements Serializable {
     @Column(name = "DateUpdated")
     @JsonIgnore
     private Calendar dateUpdated;
+
+    /**
+     * Publisher builder
+     * @param title The title
+     */
+    @Builder
+    public Publisher(String title) {
+        this.title = title;
+    }
 
     /**
      * {@inheritDoc}

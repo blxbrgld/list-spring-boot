@@ -72,4 +72,11 @@ public interface ArtistService {
 	 * @return List Of Artist Titles
 	 */
 	List<String> findArtistsLike(String term);
+
+	/**
+	 * Check if an artist with the given title exists and if not create it
+	 * @param title The title
+	 * @return The {@link Artist} existing or created
+	 */
+	Artist artistExists(String title);
 }

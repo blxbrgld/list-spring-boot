@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Fixtures service implementation
@@ -89,6 +90,26 @@ public class FixtureServiceImpl implements FixtureService {
             return category;
         } catch (Exception exception) {
             throw new RuntimeException("Category fixture exception.");
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Item itemFixture(String title, String category, Integer year, Map<String, String> artists, List<String> comments) {
+        try {
+            Item item = Item.builder()
+                .titleEng(title)
+                .category(category)
+                .year(year)
+                .artists(artists)
+                .comments(comments)
+                .build();
+            fixtureDao.persist(new Fixture(FixtureType.ITEM, objectMapper.writeValueAsString(item)));
+            return item;
+        } catch (Exception exception) {
+            throw new RuntimeException("Item fixture exception.");
         }
     }
 

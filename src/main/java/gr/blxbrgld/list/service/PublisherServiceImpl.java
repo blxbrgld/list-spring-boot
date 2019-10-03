@@ -68,6 +68,14 @@ public class PublisherServiceImpl implements PublisherService {
      * {@inheritDoc}
      */
     @Override
+    public Optional<Publisher> getPublisher(String title) {
+        return publisherDao.getByTitle(title);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public boolean deletePublisher(Integer id) {
         Optional<Publisher> publisher = publisherDao.get(id);
         if(publisher.isPresent() && !itemDao.havingPublisherExists(publisher.get())) { // No Items With This Publisher Exist

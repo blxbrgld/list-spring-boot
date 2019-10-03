@@ -43,6 +43,13 @@ public interface PublisherService {
     Optional<Publisher> getPublisher(Integer id);
 
     /**
+     * Get publisher by title
+     * @param title The title
+     * @return {@link Publisher}
+     */
+    Optional<Publisher> getPublisher(String title);
+
+    /**
      * Delete Publisher With The Given Id If There Are No Related Item Objects
      * @param id Publisher's Id
      * @return TRUE or FALSE

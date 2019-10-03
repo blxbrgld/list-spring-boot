@@ -98,4 +98,19 @@ public class ArtistServiceImpl implements ArtistService {
 		}
 		return titleList;
 	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Artist artistExists(String title) {
+		Optional<Artist> existing = getArtist(title);
+		if(existing.isPresent()) {
+			return existing.get();
+		} else {
+			artistDao.persist(Artist.builder().title(title).build());
+			//noinspection ConstantConditions
+			return getArtist(title).get();
+		}
+	}
 }

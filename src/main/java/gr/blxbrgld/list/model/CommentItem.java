@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -22,6 +24,7 @@ import java.util.Calendar;
  */
 @Getter
 @Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "CommentsItems")
 @NamedQueries({
@@ -57,6 +60,15 @@ public class CommentItem implements Serializable {
 	@JsonIgnore
 	@ApiModelProperty(hidden = true)
 	private Calendar dateUpdated;
+
+	/**
+	 * CommentItem builder
+	 * @param comment The comment
+	 */
+	@Builder
+	public CommentItem(String comment) {
+		this.idComment = Comment.builder().title(comment).build();
+	}
 
 	/**
 	 * {@inheritDoc}

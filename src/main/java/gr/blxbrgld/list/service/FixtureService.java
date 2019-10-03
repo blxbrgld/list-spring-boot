@@ -2,6 +2,9 @@ package gr.blxbrgld.list.service;
 
 import gr.blxbrgld.list.model.*;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * Fixtures service interface
  * @author blxbrgld
@@ -36,6 +39,18 @@ public interface FixtureService {
      * @return {@link Comment}
      */
     Comment commentFixture(String title);
+
+    /**
+     * Build a {@link Item} and the {@link Fixture} related with it. We won't test all item attributes,
+     * hence only a subset of them are taken into consideration when building the fixture.
+     * @param title The english title
+     * @param category The category
+     * @param year The year
+     * @param artists Artist/Activity as key/value pairs
+     * @param comments The comments
+     * @return {@link Item}
+     */
+    Item itemFixture(String title, String category, Integer year, Map<String, String> artists, List<String> comments);
 
     /**
      * Build a {@link Role} and the {@link Fixture} related with it
