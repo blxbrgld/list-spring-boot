@@ -107,6 +107,9 @@ public class FixtureServiceImpl implements FixtureService {
                 .comments(comments)
                 .build();
             fixtureDao.persist(new Fixture(FixtureType.ITEM, objectMapper.writeValueAsString(item)));
+            for(ArtistActivityItem artist : item.getArtistActivityItems()) { // The item's artists have to be persisted as fixtures too
+                fixtureDao.persist(new Fixture(FixtureType.ARTIST, objectMapper.writeValueAsString(artist.getIdArtist())));
+            }
             return item;
         } catch (Exception exception) {
             throw new RuntimeException("Item fixture exception.");

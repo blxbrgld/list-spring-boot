@@ -3,6 +3,7 @@ package gr.blxbrgld.list.rest;
 import gr.blxbrgld.list.model.Item;
 import gr.blxbrgld.list.service.ItemService;
 import gr.blxbrgld.list.utils.Tags;
+import gr.blxbrgld.list.validators.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -51,7 +52,8 @@ public class ItemController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation(value = "Create Item")
-    public void create(@Valid @ApiParam(value = "Item to create", required = true) @RequestBody Item item) {
+    //TODO @RequiredAttributesPresent
+    public void create(@Valid @CategoryExists @ArtistsValid @CommentsValid @SubtitlesValid @PublisherValid @ApiParam(value = "Item to create", required = true) @RequestBody Item item) {
         itemService.persistOrMergeItem(item);
     }
 
@@ -63,7 +65,10 @@ public class ItemController {
     @PutMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ApiOperation(value = "Update Item")
-    public void update(@ApiParam(value = "The Item Id", required = true) @PathVariable("id") Integer id, @Valid @ApiParam(value = "Item to update", required = true) @RequestBody Item item) {
+    //TODO @RequiredAttributesPresent
+    public void update(
+            @ApiParam(value = "The Item Id", required = true) @PathVariable("id") Integer id,
+            @Valid @CategoryExists @ArtistsValid @CommentsValid @SubtitlesValid @PublisherValid @ApiParam(value = "Item to update", required = true) @RequestBody Item item) {
         if(!itemService.getItem(id).isPresent()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Item not found.");
         }
@@ -79,6 +84,9 @@ public class ItemController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ApiOperation(value = "Delete Item by Id")
     public void delete(@ApiParam(value = "The Item Id", required = true) @PathVariable("id") Integer id) {
+        if(!itemService.getItem(id).isPresent()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Item not found.");
+        }
         itemService.deleteItem(id);
     }
 }

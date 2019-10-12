@@ -1,6 +1,5 @@
 package gr.blxbrgld.list.service;
 
-import gr.blxbrgld.list.dao.hibernate.CategoryDao;
 import gr.blxbrgld.list.dao.hibernate.ItemDao;
 import gr.blxbrgld.list.enums.Order;
 import gr.blxbrgld.list.model.*;
@@ -8,7 +7,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.Errors;
 
 import javax.transaction.Transactional;
 import java.util.*;
@@ -20,10 +18,6 @@ import java.util.*;
 @Service
 @Transactional
 public class ItemServiceImpl implements ItemService {
-
-	private static final List<String> filmCategories = new ArrayList<>(Arrays.asList(new String[] {"DVD Films", "DivX Films"}));
-
-	private static final String booksCategory = "Books";
 	
 	@Autowired
 	private ItemDao itemDao;
@@ -51,12 +45,6 @@ public class ItemServiceImpl implements ItemService {
      */
 	@Override
 	public void persistOrMergeItem(Item item) {
-		//validateArtistActivityItems(item, errors); //TODO Validator
-		//validateCommentItems(item, errors); //TODO Validator
-		//validateSubtitles(item, errors); //TODO Validator
-		//validateYear(item, errors); //TODO Validator
-		//validatePublisher(item, errors); //TODO Validator
-
 		// All related items are detached when we get here, we have to handle the relationships
 		attachCategory(item);
 		attachPublisher(item);
@@ -136,85 +124,6 @@ public class ItemServiceImpl implements ItemService {
 	@Override
 	public Long countItemsHavingCategory(String title) {
 		return itemDao.countItems(title);
-	}
-	
-	/**
-	 * Validate Uniqueness Of Item's artistActivityItems. At Least One artistActivityItem Is Required
-	 * @param item Item Object
-	 * @param errors BindingResult Errors Of Item Form
-	 */
-	private void validateArtistActivityItems(Item item, Errors errors) { //TODO to be deleted
-		List<ArtistActivityItem> artistActivityItems = item.getArtistActivityItems();
-		if(artistActivityItems.isEmpty()) { //At Least One Is Required
-			errors.rejectValue("artistActivityItems", "error.missing.item.artistActivityItems");
-		}
-		else { //No Duplicates Allowed
-			Map<String, List<String>> artistActivityMap = new HashMap<>();
-			for(ArtistActivityItem artistActivityItem : artistActivityItems) {
-				String artist = artistActivityItem.getIdArtist().getTitle();
-				String activity = artistActivityItem.getIdActivity().getTitle();
-				if("".equals(artist) || activity==null) {
-					errors.rejectValue("artistActivityItems", "error.imperfect.item.artistActivityItems");
-					return; //Stop Processing
-				}
-                else if(artistActivityMap.containsKey(activity)) { //Artists With This Activity Exist
-                    List<String> artistList = artistActivityMap.get(activity);
-                    artistList.add(artist);
-                    artistActivityMap.put(activity, artistList);
-                }
-                else {
-                    List<String> artistList = new ArrayList<>();
-                    artistList.add(artist);
-                    artistActivityMap.put(activity, artistList);
-                }
-			}
-
-			for(List<String> value : artistActivityMap.values()) { //Loop Through Map Values To Check For Duplicates
-				Set<String> artistSet = new HashSet<>(value);
-				if(value.size() != artistSet.size()) {
-					errors.rejectValue("artistActivityItems", "error.duplicate.item.artistActivityItems");
-					break; //Stop Processing
-				}
-			}
-		}
-	}
-
-	/**
-	 * Validate Uniqueness Of Item's commentItems
-	 * @param item Item Object
-	 */
-	private void validateCommentItems(Item item) { //TODO to be deleted
-		List<String> commentsList = new ArrayList<>();
-		for(CommentItem comment : item.getCommentItems()) {
-			commentsList.add(comment.getIdComment().getTitle());
-		}
-		Set<String> commentsSet = new HashSet<>(commentsList);
-		if(commentsSet.size() != commentsList.size()) {
-        }
-	}
-	
-	/**
-	 * Validate Existence Of Subtitles For Film Items
-	 * @param item Item Object
-	 */
-	private void validateSubtitles(Item item) { //TODO to be deleted
-		if(item.getCategory() != null && filmCategories.contains(item.getCategory().getTitle()) && item.getSubtitles() == null) {}
-	}
-	
-	/**
-	 * Validate Existence Of Year For Film Items
-	 * @param item Item Object
-	 */
-	private void validateYear(Item item) { //TODO to be deleted
-		if(item.getCategory() != null && filmCategories.contains(item.getCategory().getTitle()) && item.getYear() == null) {}
-	}
-
-	/**
-	 * Validate Existence Of Publisher For Book Items
-	 * @param item Item Object
-	 */
-	private void validatePublisher(Item item) { //TODO to be deleted
-		if(item.getCategory()!=null && booksCategory.equalsIgnoreCase(item.getCategory().getTitle()) && item.getPublisher()==null) {}
 	}
 
 	/**

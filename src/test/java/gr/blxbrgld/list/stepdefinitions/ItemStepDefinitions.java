@@ -2,6 +2,7 @@ package gr.blxbrgld.list.stepdefinitions;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
+import cucumber.runtime.CucumberException;
 import gr.blxbrgld.list.ListTestBase;
 import gr.blxbrgld.list.model.Item;
 import gr.blxbrgld.list.service.FixtureService;
@@ -42,6 +43,11 @@ public class ItemStepDefinitions extends ListTestBase {
         Optional<Item> item = itemService.getItem(title);
         Integer id = item.map(Item::getId).orElse(-1); // The found id or an id that for sure does not exist
         commonSteps.request(HttpMethod.GET, ITEMS_PATH + id);
+    }
+
+    @When("^request to create item$")
+    public void createItem(List<Map<String, String>> items) {
+       commonSteps.request(HttpMethod.POST, ITEMS_PATH, fixtures(items).get(0));
     }
 
     /**

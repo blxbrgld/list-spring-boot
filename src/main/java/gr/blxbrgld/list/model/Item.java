@@ -3,7 +3,9 @@ package gr.blxbrgld.list.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import gr.blxbrgld.list.validators.FileValid;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import gr.blxbrgld.list.jackson.ItemDeserializer;
+import gr.blxbrgld.list.validators.*;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Getter;
@@ -76,6 +78,7 @@ import java.util.stream.Collectors;
 	@ClassBridge(name = "itemCategory", impl = CategoryBridge.class)
 })
 */
+@JsonDeserialize(using = ItemDeserializer.class)
 public class Item implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -127,8 +130,8 @@ public class Item implements Serializable {
 	@Column(name = "Description", columnDefinition = "text")
 	@ApiModelProperty(position = 5)
 	private String description;
-	
-	@Range(min = 1900, max = 2100)
+
+	@NullOrRange(min = 1900, max = 2100)
 	@Column(name = "Year")
 	@ApiModelProperty(position = 6)
 	private Integer year;
@@ -143,18 +146,18 @@ public class Item implements Serializable {
 	@JoinColumn(name = "Subtitles")
 	@ApiModelProperty(dataType = "java.lang.String", allowableValues = "Greek Subtitles,English Subtitles,No Subtitles", position = 8)
 	private Subtitles subtitles;
-	
-	@Range(min = 1, max = 100)
+
+	@NullOrRange(min = 1, max = 100)
 	@Column(name = "Discs")
 	@ApiModelProperty(position = 9)
 	private Integer discs;
-	
-	@Min(1)
+
+	@NullOrMin(1)
 	@Column(name = "Place")
 	@ApiModelProperty(position = 10)
 	private Integer place;
 
-	@Min(10)
+	@NullOrMin(10)
 	@Column(name = "Pages")
 	@ApiModelProperty(position = 11)
 	private Integer pages;
