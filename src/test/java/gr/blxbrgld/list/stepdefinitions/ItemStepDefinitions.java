@@ -50,6 +50,18 @@ public class ItemStepDefinitions extends ListTestBase {
        commonSteps.request(HttpMethod.POST, ITEMS_PATH, fixtures(items).get(0));
     }
 
+    @When("^request to update item with title (.*) to$")
+    public void updateItem(String title, List<Map<String, String>> items) {
+        Optional<Item> existing = itemService.getItem(title);
+        Integer id = existing.map(Item::getId).orElse(-1); // The found id or an id that for sure does not exist
+        List<Item> fixtures = fixtures(items);
+        if(fixtures.size()!=1) {
+            throw new CucumberException("Cucumber expression is misconfigured.");
+        } else {
+            commonSteps.request(HttpMethod.PUT, ITEMS_PATH + id, fixtures.get(0));
+        }
+    }
+
     /**
      * Build and persist {@link Item} and {@link gr.blxbrgld.list.model.Fixture} from Cucumber table input
      * @param items Cucumber table input as List Of key/value pairs

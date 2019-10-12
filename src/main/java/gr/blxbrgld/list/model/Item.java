@@ -165,7 +165,7 @@ public class Item implements Serializable {
 	//@Field(name = "sortArtist", analyze = Analyze.NO) //TODO Hibernate Search
 	//@FieldBridge(impl = ArtistActivityItemBridge.class) //TODO Hibernate Search
 	//@IndexedEmbedded //TODO Hibernate Search
-	@OneToMany(mappedBy = "idItem", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "idItem", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	@OrderBy(clause = "id ASC")
 	@Fetch(FetchMode.SELECT)
 	@JsonProperty("artists")
@@ -173,7 +173,7 @@ public class Item implements Serializable {
 	@ApiModelProperty(position = 12)
 	private List<ArtistActivityItem> artistActivityItems;
 	
-	@OneToMany(mappedBy = "idItem", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "idItem", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	@OrderBy(clause = "id ASC")
 	@Fetch(FetchMode.SELECT)
 	@JsonProperty("comments")
