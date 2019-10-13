@@ -101,8 +101,15 @@ Feature: Endpoints related to categories
     And the response contains key title with value Devices
     And the response list contains entry with key categories.title and value Furniture
 
-  @wip #TODO Testing
   Scenario: Request to delete a category that is related with some items
+    Given category with title Applications exists
+    And activity with title Developer exists
+    And comment with title Spring Applications exists
+    When request to create item
+      | title            | category     | year | artist    | activity  | comment             |
+      | List application | Applications | 2019 | blxbrgld  | Developer | Spring Applications |
+    When request to delete category with title Applications
+    Then the http response status code is 400
 
   Scenario: Request to delete a category
     Given category with title Furniture exists

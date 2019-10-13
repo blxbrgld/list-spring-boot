@@ -183,7 +183,7 @@ public class FixtureServiceImpl implements FixtureService {
      * {@inheritDoc}
      */
     @Override
-    @Scheduled(cron = "0 0/30 * * * ?") //TODO Delete only stale fixtures?
+    @Scheduled(cron = "0 0/30 * * * ?")
     public void deleteFixtures() {
         deleteFixturesByType(FixtureType.USER);
         deleteFixturesByType(FixtureType.ROLE);

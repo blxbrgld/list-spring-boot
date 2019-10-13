@@ -53,8 +53,15 @@ Feature: Endpoints related to artists
     When request to delete artist with title Britney Spears
     Then the http response status code is 400
 
-  @wip #TODO Testing
   Scenario: Request to delete an artist that is related with some items
+    Given category with title Applications exists
+    And activity with title Developer exists
+    And comment with title Spring Applications exists
+    When request to create item
+      | title            | category     | year | artist    | activity  | comment             |
+      | List application | Applications | 2019 | blxbrgld  | Developer | Spring Applications |
+    When request to delete artist with title blxbrgld
+    Then the http response status code is 400
 
   Scenario: Request to delete an artist
     Given artist with title Britney Spears exists

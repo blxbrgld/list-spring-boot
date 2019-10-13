@@ -51,8 +51,15 @@ Feature: Endpoints related to activities
     When request to delete activity with title Cameraman
     Then the http response status code is 400
 
-  @wip #TODO Testing
   Scenario: Request to delete an activity that is related with some items
+    Given category with title Applications exists
+    And activity with title Developer exists
+    And comment with title Spring Applications exists
+    When request to create item
+      | title            | category     | year | artist    | activity  | comment             |
+      | List application | Applications | 2019 | blxbrgld  | Developer | Spring Applications |
+    When request to delete activity with title Developer
+    Then the http response status code is 400
 
   Scenario: Request to delete an activity
     Given activity with title Cameraman exists

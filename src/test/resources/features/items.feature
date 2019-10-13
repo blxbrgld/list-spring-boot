@@ -140,8 +140,18 @@ Feature: Endpoints related to items
     And the response list contains entry with key comments.comment.title and value Spring Web Applications
     And the response list does not contain entry with key comments.comment.title and value Spring Applications
 
-  @wip
   Scenario: Request to delete item that does not exist
+    When request to delete item with title List application
+    Then the http response status code is 404
 
-  @wip
   Scenario: Request to delete item
+    Given category with title Applications exists
+    And activity with title Developer exists
+    And comment with title Spring Applications exists
+    And the following items exists
+      | title            | category     | year | artist    | activity  | comment             |
+      | List application | Applications | 2019 | blxbrgld  | Developer | Spring Applications |
+    When request to delete item with title List application
+    Then the http response status code is 204
+    When request item List application by id
+    Then the http response status code is 404

@@ -51,9 +51,6 @@ Feature: Endpoints related to subtitles
     When request to delete subtitles with title Danish Subtitles
     Then the http response status code is 400
 
-  @wip #TODO Testing
-  Scenario: Request to delete a subtitle that is related with some items
-
   Scenario: Request to delete a subtitle
     Given subtitles with title Danish Subtitles exist
     When request to delete subtitles with title Danish Subtitles

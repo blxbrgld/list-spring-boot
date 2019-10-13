@@ -49,8 +49,15 @@ Feature: Endpoints related to comments
     When request to delete comment with title Blaxploitation
     Then the http response status code is 400
 
-  @wip #TODO Testing
   Scenario: Request to delete a comment that is related with some items
+    Given category with title Applications exists
+    And activity with title Developer exists
+    And comment with title Spring Applications exists
+    When request to create item
+      | title            | category     | year | artist    | activity  | comment             |
+      | List application | Applications | 2019 | blxbrgld  | Developer | Spring Applications |
+    When request to delete comment with title Spring Applications
+    Then the http response status code is 400
 
   Scenario: Request to delete a comment
     Given comment with title Blaxploitation exists

@@ -62,6 +62,13 @@ public class ItemStepDefinitions extends ListTestBase {
         }
     }
 
+    @When("^request to delete item with title (.*)$")
+    public void deleteItem(String title) {
+        Optional<Item> item = itemService.getItem(title);
+        Integer id = item.map(Item::getId).orElse(-1); // The found id or an id that for sure does not exist
+        commonSteps.request(HttpMethod.DELETE, ITEMS_PATH + id);
+    }
+
     /**
      * Build and persist {@link Item} and {@link gr.blxbrgld.list.model.Fixture} from Cucumber table input
      * @param items Cucumber table input as List Of key/value pairs
