@@ -54,6 +54,9 @@ public @interface TitleNotDuplicate {
         @Autowired
         private SubtitlesDao subtitlesDao;
 
+        @Autowired
+        private PublisherDao publisherDao;
+
         /**
          * {@inheritDoc}
          */
@@ -95,6 +98,8 @@ public @interface TitleNotDuplicate {
                 return roleDao.getByTitle(((Role) object).getTitle()).map(Role::getId);
             } else if(object instanceof Subtitles) {
                 return subtitlesDao.getByTitle(((Subtitles) object).getTitle()).map(Subtitles::getId);
+            } else if(object instanceof Publisher) {
+                return publisherDao.getByTitle(((Publisher) object).getTitle()).map(Publisher::getId);
             } else {
                 throw new Exception("TitleNotDuplicate Validator Error.");
             }

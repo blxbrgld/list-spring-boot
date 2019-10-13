@@ -2,6 +2,7 @@ package gr.blxbrgld.list.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,16 +37,19 @@ public class Publisher implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
     @GenericGenerator(name = "native", strategy = "native")
     @Column(name = "Id")
+    @ApiModelProperty(readOnly = true, position = 0)
     private Integer id;
 
     @NotNull
     @Length(min = 3, max = 100)
     @Column(name = "Title")
+    @ApiModelProperty(required = true, allowableValues = "range[3, 100]", position = 1)
     private String title;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "DateUpdated")
     @JsonIgnore
+    @ApiModelProperty(hidden = true)
     private Calendar dateUpdated;
 
     /**
