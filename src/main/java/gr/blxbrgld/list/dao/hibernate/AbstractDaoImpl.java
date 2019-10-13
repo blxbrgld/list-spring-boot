@@ -25,7 +25,7 @@ import java.util.Optional;
 public abstract class AbstractDaoImpl<T> implements AbstractDao<T> {
 
 	@PersistenceContext
-	protected EntityManager entityManager;
+	private EntityManager entityManager;
 
 	private Class<T> domainClass;
 	
@@ -82,6 +82,7 @@ public abstract class AbstractDaoImpl<T> implements AbstractDao<T> {
 	@Override
 	public void persistOrMerge(T t) {
 		Method method = ReflectionUtils.findMethod(getDomainClass(), "getId");
+		//noinspection ConstantConditions
 		if(method != null) {
 			try {
 				if(method.invoke(t) == null) {
@@ -208,6 +209,7 @@ public abstract class AbstractDaoImpl<T> implements AbstractDao<T> {
 	 */
 	private void setDateUpdated(T t) {
 		Method method = ReflectionUtils.findMethod(getDomainClass(), "setDateUpdated", Calendar.class);
+		//noinspection ConstantConditions
 		if(method!=null) {
 			try {
 				method.invoke(t, Calendar.getInstance());

@@ -39,6 +39,7 @@ public @interface SubtitlesValid {
          */
         @Override
         public boolean isValid(Item item, ConstraintValidatorContext context) {
+            //noinspection SimplifiableIfStatement
             if(item.getSubtitles()!=null && StringUtils.trimToNull(item.getSubtitles().getTitle())!=null) {
                 return subtitlesService.getSubtitles(item.getSubtitles().getTitle()).isPresent();
             }

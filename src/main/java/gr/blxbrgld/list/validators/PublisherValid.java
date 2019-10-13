@@ -39,6 +39,7 @@ public @interface PublisherValid {
          */
         @Override
         public boolean isValid(Item item, ConstraintValidatorContext context) {
+            //noinspection SimplifiableIfStatement
             if(item.getPublisher()!=null && StringUtils.trimToNull(item.getPublisher().getTitle())!=null) {
                 return publisherService.getPublisher(item.getPublisher().getTitle()).isPresent();
             }

@@ -33,6 +33,7 @@ public class CategoryServiceImpl implements CategoryService {
 	public void persistOrMergeCategory(Category category) {
 		Category parent = category.getParent(); // If present, it's a transient object created from the deserializer and needs to be fetched from the database
 		if(parent!=null && parent.getTitle()!=null) {
+			//noinspection ConstantConditions
 			category.setParent(categoryDao.getByTitle(parent.getTitle()).get());
 		}
 		categoryDao.persistOrMerge(category);

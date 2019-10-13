@@ -34,6 +34,7 @@ public class UserServiceImpl implements UserService {
 	public void persistOrMergeUser(User user) {
 		String encodedPassword = user.getPassword(); //TODO bCryptPasswordEncoder.encode
 		user.setPassword(encodedPassword);
+		//noinspection ConstantConditions
 		user.setRole(roleDao.getByTitle(user.getRole().getTitle()).get());
 		userDao.persistOrMerge(user);
 	}

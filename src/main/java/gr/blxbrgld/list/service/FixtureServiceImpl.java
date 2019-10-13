@@ -22,7 +22,7 @@ import java.util.Map;
 @Transactional
 public class FixtureServiceImpl implements FixtureService {
 
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private static final ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
     private FixtureDao fixtureDao;

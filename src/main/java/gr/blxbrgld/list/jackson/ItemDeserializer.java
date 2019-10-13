@@ -9,8 +9,6 @@ import gr.blxbrgld.list.model.Item;
 import java.io.IOException;
 import java.util.*;
 
-import static java.util.Optional.ofNullable;
-
 /**
  * Item Deserializer
  * @author blxbrgld
