@@ -1,0 +1,21 @@
+/* General */
+body {
+  padding: 70px 0 20px 0;
+}
+.display-4 {
+  margin: 10px 0 10px 0;
+}
+/* Forms */
+.form-group .error {
+  color: red;
+  margin-top: 3px;
+  font-weight: 400;
+  font-size: 12px;
+}
+/* Tables */
+td i.fa, form button {
+  margin-right: 10px;
+}
+.narrow {
+  width: 100px;
+}

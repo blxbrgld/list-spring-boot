@@ -1,0 +1,27 @@
+<div class="row">
+  <div class="col">
+    <h1 class="display-4">Subtitles list</h1>
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col" class="narrow">Id</th>
+            <th scope="col">Title</th>
+            <th scope="col" class="narrow">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let subtitle of subtitles">
+            <th scope="row">{{subtitle?.id}}</th>
+            <td>{{subtitle?.title}}</td>
+            <td>
+              <i class="fa fa-edit" title="Edit" [routerLink]="[subtitle.id]"></i>
+              <i class="fa fa-trash" title="Delete" (click)="delete(subtitle.id)"></i>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <button type="button" class="btn btn-primary" [routerLink]="['/subtitles/create']">Create</button>
+  </div>
+</div>
