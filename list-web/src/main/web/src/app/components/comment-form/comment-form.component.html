@@ -1,0 +1,12 @@
+<h1 class="display-4">Comment form</h1>
+<form *ngIf="comment" [formGroup]="commentForm" (ngSubmit)="submit()" #f="ngForm">
+  <div class="form-group">
+    <label for="title">Title</label>
+    <input type="text" class="form-control" id="title" name="title" placeholder="Title" formControlName="title">
+    <div class="error" *ngIf="f.submitted && commentForm.get('title').errors?.required">The title is required.</div>
+    <div class="error" *ngIf="f.submitted && commentForm.get('title').errors?.serverError">{{commentForm.get('title').errors?.serverError}}</div>
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+  <button type="button" class="btn btn-secondary" (click)="cancel()">Cancel</button>
+  <button type="button" class="btn btn-danger" (click)="delete()" *ngIf="comment.id">Delete</button>
+</form>
