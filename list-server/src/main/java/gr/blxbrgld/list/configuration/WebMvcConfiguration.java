@@ -1,16 +1,11 @@
 package gr.blxbrgld.list.configuration;
 
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.method.HandlerTypePredicate;
 import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.resource.PathResourceResolver;
-
-import java.io.IOException;
 
 /**
  * WebMvcConfiguration
@@ -18,6 +13,8 @@ import java.io.IOException;
  */
 @Configuration
 public class WebMvcConfiguration implements WebMvcConfigurer {
+
+    private static final String FORWARD = "forward:/index.html";
 
     /**
      * Adds the /api path prefix to all REST controllers
@@ -29,26 +26,13 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
     }
 
     /**
-     * Surrenders routing control to Angular
-     * @param registry {@link ResourceHandlerRegistry}
+     * Redirect all to index.html except everything under /api or urls ending with a file extension (i.e. ".js")
+     * @param registry {@link ViewControllerRegistry}
      */
     @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry
-            .addResourceHandler("/**")
-            .addResourceLocations("classpath:/resources/")
-            .resourceChain(true)
-            .addResolver(
-                new PathResourceResolver() {
-                    /**
-                     * {@inheritDoc}
-                     */
-                    @Override @SuppressWarnings("NullableProblems")
-                    protected Resource getResource(String path, Resource resource) throws IOException {
-                        Resource relative = resource.createRelative(path);
-                        return relative.exists() && relative.isReadable() ? relative : new ClassPathResource("/resources/index.html");
-                    }
-                }
-            );
+    public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController("/").setViewName(FORWARD);
+        registry.addViewController("/{x:[\\w\\-]+}").setViewName(FORWARD);
+        registry.addViewController("/{x:^(?!api$).*$}/**/{y:[\\w\\-]+}").setViewName(FORWARD);
     }
 }
