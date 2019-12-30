@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-light fixed-top bg-light">
-  <a class="navbar-brand" href="#">List</a>
+  <a class="navbar-brand" [routerLink]="['/']">Home</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -15,8 +15,6 @@
   </div>
 </nav>
 <div class="container-fluid">
-  <!-- Application alerts -->
   <app-alert></app-alert>
-  <!-- Application content -->
   <router-outlet></router-outlet>
 </div>

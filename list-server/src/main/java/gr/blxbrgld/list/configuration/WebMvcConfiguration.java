@@ -29,7 +29,7 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
     }
 
     /**
-     * Surrenders routing control to Angular for everything but /api resources
+     * Surrenders routing control to Angular
      * @param registry {@link ResourceHandlerRegistry}
      */
     @Override

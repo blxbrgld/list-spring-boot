@@ -19,7 +19,7 @@ Swagger UI is available at `http://127.0.0.1:8080/swagger-ui.html`
 
 #### E2E testing
 
-Run the integration tests by building without the `skip-it` profile:
+Run the integration tests by building without the **skip-it** profile:
 
 ```
 mvn clean install -P-skip-it
