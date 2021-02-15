@@ -27,7 +27,7 @@
 		<frontend.plugin.version>1.8.0</frontend.plugin.version>
 		<resources.plugin.version>3.1.0</resources.plugin.version>
 		<serenity.plugin.version>2.0.71</serenity.plugin.version>
-		<liquibase.plugin.version>3.3.2</liquibase.plugin.version>
+		<liquibase.plugin.version>4.3.1</liquibase.plugin.version>
 	</properties>
 	<modules>
 		<module>list-server</module>
@@ -49,11 +49,6 @@
 				<scope>runtime</scope>
 			</dependency>
 			<dependency>
-				<groupId>org.apache.commons</groupId>
-				<artifactId>commons-lang3</artifactId>
-				<version>${commons.lang.version}</version>
-			</dependency>
-			<dependency>
 				<groupId>io.springfox</groupId>
 				<artifactId>springfox-swagger2</artifactId>
 				<version>${swagger.version}</version>
@@ -63,6 +58,11 @@
 				<artifactId>springfox-swagger-ui</artifactId>
 				<version>${swagger.version}</version>
 				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-lang3</artifactId>
+				<version>${commons.lang.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>commons-fileupload</groupId>

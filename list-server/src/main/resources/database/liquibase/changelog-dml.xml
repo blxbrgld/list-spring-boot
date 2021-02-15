@@ -1,22 +1,53 @@
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
-    <!-- mvn liquibase:changelogSync To Mark The changeSets As Applied In DATABASECHANGELOG Table -->
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog context="default" xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+
     <changeSet author="blxbrgld" id="dml-1">
+        <comment>Activities</comment>
         <sql>
-            INSERT INTO Roles VALUES (1,'Administrator','2014-02-19 10:22:46'), (2,'Viewer','2014-02-19 10:23:46');
-            INSERT INTO Users VALUES (1,'blixabargeld','$2a$10$A/8YlR/m8lAbe6.Lr.HDRuqTHYM80r9K2oIayAOTXQX6bjAKWoMGW','nikolaos.i.papadopoulos@gmail.com',1,1,'2014-05-02 06:18:37');
+            INSERT INTO `Activities`(`Title`) VALUES ('Musician'), ('Conductor'), ('Director'), ('Actor'), ('Author');
         </sql>
     </changeSet>
-    <!-- 'Book' Entity Change Sets -->
-    <changeSet author="npapadooulos" id="dml-2">
-        <comment>Book Category</comment>
+    <changeSet author="blxbrgld" id="dml-2">
+        <comment>Categories</comment>
         <sql>
-            INSERT INTO `Categories` (`Title`) VALUES ('Books');
+            INSERT INTO `Categories`(`Title`) VALUES ('Music'),('Films'),('Books');
+            SELECT @music := `Id` FROM `Categories` WHERE `Title` = 'Music';
+            SELECT @films := `Id` FROM `Categories` WHERE `Title` = 'Films';
+            INSERT INTO `Categories`(`Title`,`Parent`) VALUES
+                ('Popular Music',@music),
+                ('Classical Music',@music),
+                ('Greek Music',@music),
+                ('DVD Films',@films),
+                ('DivX Films',@films);
         </sql>
     </changeSet>
     <changeSet author="blxbrgld" id="dml-3">
-        <comment>Author Activity</comment>
+        <comment>Comments</comment>
         <sql>
-            INSERT INTO `Activities` (`Title`) VALUES ('Author');
+            INSERT INTO `Comments`(`Title`) VALUES
+                ('Documentary'),('Music / Documentary'),('Short Film'),('Collection of Short Films'),('TV Series'),
+                ('Compilation'),('Live'),('Tribute Album'),('Covers Album'),('Bootleg'),('OST'),('EP'),('Split EP'),
+                ('Single'),('Split Single'),('7\'\''),('Split 7\'\''),('12\'\''),('Split 12\'\''),('Promo');
         </sql>
     </changeSet>
+    <changeSet author="blxbrgld" id="dml-4">
+        <comment>Subtitles</comment>
+        <sql>
+            INSERT INTO `Subtitles`(`Title`) VALUES ('No Subtitles'),('Greek Subtitles'),('English Subtitles');
+        </sql>
+    </changeSet>
+    <changeSet author="blxbrgld" id="dml-5">
+        <comment>Roles and a sample user with 'Administrator' rights</comment>
+        <sql>
+            INSERT INTO `Roles`(`Title`) VALUES ('Administrator'), ('Viewer');
+            COMMIT;
+            INSERT INTO Users(`Username`,`Password`,`Email`,`Role`,`Enabled`) VALUES (
+                'blixabargeld',
+                '$2a$10$A/8YlR/m8lAbe6.Lr.HDRuqTHYM80r9K2oIayAOTXQX6bjAKWoMGW',
+                'nikolaos.i.papadopoulos@gmail.com',
+                (SELECT `Id` FROM `Roles` WHERE `Title` = 'Administrator'),
+                1);
+        </sql>
+    </changeSet>
+
 </databaseChangeLog>

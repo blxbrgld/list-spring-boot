@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog context="integration-tests" xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+
+    <changeSet author="blxbrgld" id="dml-6">
+        <comment>Data for integration tests</comment>
+        <sql>
+            INSERT INTO `Artists`(`Title`) VALUES ('Nick Cave &amp; The Bad Seeds'), ('!!!');
+            INSERT INTO `Items`(`TitleEng`,`Category`,`PhotoPath`,`Year`,`Rating`,`Discs`) VALUES (
+                'From Her To Eternity',
+                (SELECT `Id` FROM `Categories` WHERE `Title` = 'Popular Music'),
+                'item_03786.jpg', 1984, 5, 1
+            );
+            INSERT INTO `ArtistsActivitiesItems`(`IdArtist`,`IdItem`,`IdActivity`) VALUES (
+                (SELECT `Id` FROM `Artists` WHERE `Title` = 'Nick Cave &amp; The Bad Seeds'),
+                (SELECT `Id` FROM `Items` WHERE `TitleEng` = 'From Her To Eternity'),
+                (SELECT `Id` FROM `Activities` WHERE `Title` = 'Musician')
+            );
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

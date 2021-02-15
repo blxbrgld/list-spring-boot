@@ -1,5 +1,6 @@
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
-    <!-- mvn liquibase:changelogSync To Mark The changeSets As Applied In DATABASECHANGELOG Table -->
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog context="default" xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+
     <changeSet author="blxbrgld" id="ddl-1">
         <createTable tableName="Activities">
             <column autoIncrement="true" name="Id" type="INT">
@@ -8,12 +9,15 @@
             <column name="Title" type="VARCHAR(45)">
                 <constraints nullable="false"/>
             </column>
-            <column defaultValueComputed="CURRENT_TIMESTAMP" name="DateUpdated" type="TIMESTAMP">
+            <column name="DateUpdated" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
                 <constraints nullable="false"/>
             </column>
         </createTable>
     </changeSet>
     <changeSet author="blxbrgld" id="ddl-2">
+        <addUniqueConstraint columnNames="Title" constraintName="UNIQUE_Title" deferrable="false" disabled="false" initiallyDeferred="false" tableName="Activities"/>
+    </changeSet>
+    <changeSet author="blxbrgld" id="ddl-3">
         <createTable tableName="Artists">
             <column autoIncrement="true" name="Id" type="INT">
                 <constraints primaryKey="true"/>
@@ -22,12 +26,143 @@
                 <constraints nullable="false"/>
             </column>
             <column name="Description" type="TEXT"/>
-            <column defaultValueComputed="CURRENT_TIMESTAMP" name="DateUpdated" type="TIMESTAMP">
+            <column name="DateUpdated" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
                 <constraints nullable="false"/>
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="blxbrgld" id="ddl-3">
+    <changeSet author="blxbrgld" id="ddl-4">
+        <addUniqueConstraint columnNames="Title" constraintName="UNIQUE_Title" deferrable="false" disabled="false" initiallyDeferred="false" tableName="Artists"/>
+    </changeSet>
+    <changeSet author="blxbrgld" id="ddl-5">
+        <createTable tableName="Categories">
+            <column autoIncrement="true" name="Id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="Title" type="VARCHAR(45)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="Parent" type="INT"/>
+            <column name="DateUpdated" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="blxbrgld" id="ddl-6">
+        <addUniqueConstraint columnNames="Title" constraintName="UNIQUE_Title" deferrable="false" disabled="false" initiallyDeferred="false" tableName="Categories"/>
+    </changeSet>
+    <changeSet author="blxbrgld" id="ddl-7">
+        <addForeignKeyConstraint baseColumnNames="Parent" baseTableName="Categories" constraintName="FK_Category_Parent" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="CASCADE" referencedColumnNames="Id" referencedTableName="Categories"/>
+    </changeSet>
+    <changeSet author="blxbrgld" id="ddl-8">
+        <createTable tableName="Comments">
+            <column autoIncrement="true" name="Id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="Title" type="VARCHAR(45)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DateUpdated" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="blxbrgld" id="ddl-9">
+        <addUniqueConstraint columnNames="Title" constraintName="UNIQUE_Title" deferrable="false" disabled="false" initiallyDeferred="false" tableName="Comments"/>
+    </changeSet>
+    <changeSet author="blxbrgld" id="ddl-10">
+        <createTable tableName="Subtitles">
+            <column autoIncrement="true" name="Id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="Title" type="VARCHAR(45)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DateUpdated" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="blxbrgld" id="ddl-11">
+        <addUniqueConstraint columnNames="Title" constraintName="UNIQUE_Title" deferrable="false" disabled="false" initiallyDeferred="false" tableName="Subtitles"/>
+    </changeSet>
+    <changeSet author="blxbrgld" id="ddl-12">
+        <createTable tableName="Publishers">
+            <column autoIncrement="true" name="Id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="Title" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DateUpdated" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="blxbrgld" id="ddl-13">
+        <addUniqueConstraint columnNames="Title" constraintName="UNIQUE_Title" deferrable="false" disabled="false" initiallyDeferred="false" tableName="Publishers"/>
+    </changeSet>
+    <changeSet author="blxbrgld" id="ddl-14">
+        <createTable tableName="Items">
+            <column autoIncrement="true" name="Id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="TitleEng" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TitleEll" type="VARCHAR(255)"/>
+            <column name="Category" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="Publisher" type="INT"/>
+            <column name="PhotoPath" type="VARCHAR(45)"/>
+            <column name="Description" type="TEXT"/>
+            <column name="Year" type="INT"/>
+            <column name="Rating" type="INT"/>
+            <column name="Subtitles" type="INT"/>
+            <column name="Discs" type="INT"/>
+            <column name="Place" type="INT"/>
+            <column name="Pages" type="INT"/>
+            <column name="DateUpdated" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="blxbrgld" id="ddl-15">
+        <addForeignKeyConstraint baseColumnNames="Category" baseTableName="Items" constraintName="FK_Item_Category" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="CASCADE" referencedColumnNames="Id" referencedTableName="Categories"/>
+    </changeSet>
+    <changeSet author="blxbrgld" id="ddl-16">
+        <addForeignKeyConstraint baseColumnNames="Subtitles" baseTableName="Items" constraintName="FK_Item_Subtitles" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="CASCADE" referencedColumnNames="Id" referencedTableName="Subtitles"/>
+    </changeSet>
+    <changeSet author="blxbrgld" id="ddl-17">
+        <addForeignKeyConstraint baseColumnNames="Publisher" baseTableName="Items" constraintName="FK_Item_Publisher" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="CASCADE" referencedColumnNames="Id" referencedTableName="Publishers"/>
+    </changeSet>
+    <changeSet author="blxbrgld" id="ddl-18">
+        <createTable tableName="CommentsItems">
+            <column autoIncrement="true" name="Id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="IdItem" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="IdComment" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DateUpdated" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="blxbrgld" id="ddl-19">
+        <addUniqueConstraint columnNames="IdItem, IdComment" constraintName="UNIQUE_Comment_Item" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CommentsItems"/>
+    </changeSet>
+    <changeSet author="blxbrgld" id="ddl-20">
+        <addForeignKeyConstraint baseColumnNames="IdComment" baseTableName="CommentsItems" constraintName="FK_CommentsItems_Comment" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="CASCADE" referencedColumnNames="Id" referencedTableName="Comments"/>
+    </changeSet>
+    <changeSet author="blxbrgld" id="ddl-21">
+        <addForeignKeyConstraint baseColumnNames="IdItem" baseTableName="CommentsItems" constraintName="FK_CommentsItems_Item" deferrable="false" initiallyDeferred="false" onDelete="CASCADE" onUpdate="CASCADE" referencedColumnNames="Id" referencedTableName="Items"/>
+    </changeSet>
+    <changeSet author="blxbrgld" id="ddl-22">
         <createTable tableName="ArtistsActivitiesItems">
             <column autoIncrement="true" name="Id" type="INT">
                 <constraints primaryKey="true"/>
@@ -41,81 +176,24 @@
             <column name="IdActivity" type="INT">
                 <constraints nullable="false"/>
             </column>
-            <column defaultValueComputed="CURRENT_TIMESTAMP" name="DateUpdated" type="TIMESTAMP">
+            <column name="DateUpdated" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
                 <constraints nullable="false"/>
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="blxbrgld" id="ddl-4">
-        <createTable tableName="Categories">
-            <column autoIncrement="true" name="Id" type="INT">
-                <constraints primaryKey="true"/>
-            </column>
-            <column name="Title" type="VARCHAR(45)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="Parent" type="INT"/>
-            <column defaultValueComputed="CURRENT_TIMESTAMP" name="DateUpdated" type="TIMESTAMP">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
+    <changeSet author="blxbrgld" id="ddl-23">
+        <addUniqueConstraint columnNames="IdArtist, IdItem, IdActivity" constraintName="UNIQUE_Artist_Activity_Item" deferrable="false" disabled="false" initiallyDeferred="false" tableName="ArtistsActivitiesItems"/>
     </changeSet>
-    <changeSet author="blxbrgld" id="ddl-5">
-        <createTable tableName="Comments">
-            <column autoIncrement="true" name="Id" type="INT">
-                <constraints primaryKey="true"/>
-            </column>
-            <column name="Title" type="VARCHAR(45)">
-                <constraints nullable="false"/>
-            </column>
-            <column defaultValueComputed="CURRENT_TIMESTAMP" name="DateUpdated" type="TIMESTAMP">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
+    <changeSet author="blxbrgld" id="ddl-24">
+        <addForeignKeyConstraint baseColumnNames="IdActivity" baseTableName="ArtistsActivitiesItems" constraintName="FK_ArtistsActivitiesItems_Activity" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="CASCADE" referencedColumnNames="Id" referencedTableName="Activities"/>
     </changeSet>
-    <changeSet author="blxbrgld" id="ddl-6">
-        <createTable tableName="CommentsItems">
-            <column autoIncrement="true" name="Id" type="INT">
-                <constraints primaryKey="true"/>
-            </column>
-            <column name="IdItem" type="INT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="IdComment" type="INT">
-                <constraints nullable="false"/>
-            </column>
-            <column defaultValueComputed="CURRENT_TIMESTAMP" name="DateUpdated" type="TIMESTAMP">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
+    <changeSet author="blxbrgld" id="ddl-25">
+        <addForeignKeyConstraint baseColumnNames="IdArtist" baseTableName="ArtistsActivitiesItems" constraintName="FK_ArtistsActivitiesItems_Artist" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="CASCADE" referencedColumnNames="Id" referencedTableName="Artists"/>
     </changeSet>
-    <changeSet author="blxbrgld" id="ddl-7">
-        <createTable tableName="Items">
-            <column autoIncrement="true" name="Id" type="INT">
-                <constraints primaryKey="true"/>
-            </column>
-            <column name="TitleEng" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="TitleEll" type="VARCHAR(255)"/>
-            <column name="Category" type="INT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="PhotoPath" type="VARCHAR(45)"/>
-            <column name="Description" type="TEXT"/>
-            <column name="Year" type="INT"/>
-            <column name="Rating" type="INT"/>
-            <column name="Subtitles" type="INT"/>
-            <column defaultValueNumeric="1" name="Discs" type="INT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="Place" type="INT"/>
-            <column defaultValueComputed="CURRENT_TIMESTAMP" name="DateUpdated" type="TIMESTAMP">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
+    <changeSet author="blxbrgld" id="ddl-26">
+        <addForeignKeyConstraint baseColumnNames="IdItem" baseTableName="ArtistsActivitiesItems" constraintName="FK_ArtistsActivitiesItems_Item" deferrable="false" initiallyDeferred="false" onDelete="CASCADE" onUpdate="CASCADE" referencedColumnNames="Id" referencedTableName="Items"/>
     </changeSet>
-    <changeSet author="blxbrgld" id="ddl-8">
+    <changeSet author="blxbrgld" id="ddl-27">
         <createTable tableName="Roles">
             <column autoIncrement="true" name="Id" type="INT">
                 <constraints primaryKey="true"/>
@@ -128,20 +206,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="blxbrgld" id="ddl-9">
-        <createTable tableName="Subtitles">
-            <column autoIncrement="true" name="Id" type="INT">
-                <constraints primaryKey="true"/>
-            </column>
-            <column name="Title" type="VARCHAR(45)">
-                <constraints nullable="false"/>
-            </column>
-            <column defaultValueComputed="CURRENT_TIMESTAMP" name="DateUpdated" type="TIMESTAMP">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-    </changeSet>
-    <changeSet author="blxbrgld" id="ddl-10">
+    <changeSet author="blxbrgld" id="ddl-28">
         <createTable tableName="Users">
             <column autoIncrement="true" name="Id" type="INT">
                 <constraints primaryKey="true"/>
@@ -164,91 +229,33 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="blxbrgld" id="ddl-11">
-        <addUniqueConstraint columnNames="IdArtist, IdItem, IdActivity" constraintName="UNIQUE_Artist_Activity_Item" deferrable="false" disabled="false" initiallyDeferred="false" tableName="ArtistsActivitiesItems"/>
-    </changeSet>
-    <changeSet author="blxbrgld" id="ddl-12">
-        <addUniqueConstraint columnNames="IdItem, IdComment" constraintName="UNIQUE_Comment_Item" deferrable="false" disabled="false" initiallyDeferred="false" tableName="CommentsItems"/>
-    </changeSet>
-    <changeSet author="blxbrgld" id="ddl-13">
+    <changeSet author="blxbrgld" id="ddl-29">
         <addUniqueConstraint columnNames="Email" constraintName="UNIQUE_Email" deferrable="false" disabled="false" initiallyDeferred="false" tableName="Users"/>
     </changeSet>
-    <changeSet author="blxbrgld" id="ddl-14">
+    <changeSet author="blxbrgld" id="ddl-30">
         <addUniqueConstraint columnNames="Title" constraintName="UNIQUE_Title" deferrable="false" disabled="false" initiallyDeferred="false" tableName="Roles"/>
     </changeSet>
-    <changeSet author="blxbrgld" id="ddl-15">
+    <changeSet author="blxbrgld" id="ddl-31">
         <addUniqueConstraint columnNames="Username" constraintName="UNIQUE_Username" deferrable="false" disabled="false" initiallyDeferred="false" tableName="Users"/>
     </changeSet>
-    <changeSet author="blxbrgld" id="ddl-16">
-        <addForeignKeyConstraint baseColumnNames="IdActivity" baseTableName="ArtistsActivitiesItems" constraintName="FK_ArtistsActivitiesItems_Activity" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="CASCADE" referencedColumnNames="Id" referencedTableName="Activities"/>
-    </changeSet>
-    <changeSet author="blxbrgld" id="ddl-17">
-        <addForeignKeyConstraint baseColumnNames="IdArtist" baseTableName="ArtistsActivitiesItems" constraintName="FK_ArtistsActivitiesItems_Artist" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="CASCADE" referencedColumnNames="Id" referencedTableName="Artists"/>
-    </changeSet>
-    <changeSet author="blxbrgld" id="ddl-18">
-        <addForeignKeyConstraint baseColumnNames="IdItem" baseTableName="ArtistsActivitiesItems" constraintName="FK_ArtistsActivitiesItems_Item" deferrable="false" initiallyDeferred="false" onDelete="CASCADE" onUpdate="CASCADE" referencedColumnNames="Id" referencedTableName="Items"/>
-    </changeSet>
-    <changeSet author="blxbrgld" id="ddl-19">
-        <addForeignKeyConstraint baseColumnNames="Parent" baseTableName="Categories" constraintName="FK_Category_Parent" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="CASCADE" referencedColumnNames="Id" referencedTableName="Categories"/>
-    </changeSet>
-    <changeSet author="blxbrgld" id="ddl-20">
-        <addForeignKeyConstraint baseColumnNames="IdComment" baseTableName="CommentsItems" constraintName="FK_CommentsItems_Comment" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="CASCADE" referencedColumnNames="Id" referencedTableName="Comments"/>
-    </changeSet>
-    <changeSet author="blxbrgld" id="ddl-21">
-        <addForeignKeyConstraint baseColumnNames="IdItem" baseTableName="CommentsItems" constraintName="FK_CommentsItems_Item" deferrable="false" initiallyDeferred="false" onDelete="CASCADE" onUpdate="CASCADE" referencedColumnNames="Id" referencedTableName="Items"/>
-    </changeSet>
-    <changeSet author="blxbrgld" id="ddl-22">
-        <addForeignKeyConstraint baseColumnNames="Category" baseTableName="Items" constraintName="FK_Item_Category" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="CASCADE" referencedColumnNames="Id" referencedTableName="Categories"/>
-    </changeSet>
-    <changeSet author="blxbrgld" id="ddl-23">
-        <addForeignKeyConstraint baseColumnNames="Subtitles" baseTableName="Items" constraintName="FK_Item_Subtitles" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="CASCADE" referencedColumnNames="Id" referencedTableName="Subtitles"/>
-    </changeSet>
-    <changeSet author="blxbrgld" id="ddl-24">
+    <changeSet author="blxbrgld" id="ddl-32">
         <addForeignKeyConstraint baseColumnNames="Role" baseTableName="Users" constraintName="FK_User_Role" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="CASCADE" referencedColumnNames="Id" referencedTableName="Roles"/>
     </changeSet>
-    <!-- 'Book' Entity Change Sets -->
-    <changeSet author="blxbrgld" id="ddl-25">
-        <comment>Publishers Table</comment>
-        <sql>
-            CREATE TABLE `Publishers` (
-            `Id` INT(11) NOT NULL AUTO_INCREMENT,
-            `Title` VARCHAR(100) NOT NULL,
-            `DateUpdated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-            PRIMARY KEY (`Id`),
-            UNIQUE KEY `UNIQUE_Title` (`Title`)
-            ) ENGINE=InnoDB AUTO_INCREMENT=5923 DEFAULT CHARSET=utf8
-        </sql>
+    <changeSet author="blxbrgld" id="ddl-33">
+        <createTable tableName="Fixtures">
+            <column autoIncrement="true" name="Id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="Title" type="VARCHAR(45)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="Fixture" type="VARCHAR(1000)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DateUpdated" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
     </changeSet>
-    <changeSet author="blxbrgld" id="ddl-26">
-        <comment>Pages Column For Items</comment>
-        <sql>
-            ALTER TABLE `Items` ADD COLUMN `Pages` INT(11) NULL DEFAULT NULL AFTER `Place`;
-        </sql>
-    </changeSet>
-    <changeSet author="blxbrgld" id="ddl-27">
-        <comment>Publisher Column For Items + FK</comment>
-        <sql>
-            ALTER TABLE `Items` ADD COLUMN `Publisher` INT(11) NULL AFTER `Category`, ADD INDEX `FK_Item_Publisher` (`Publisher` ASC);
-            ALTER TABLE `Items` ADD CONSTRAINT `FK_Item_Publisher` FOREIGN KEY (`Publisher`) REFERENCES `Publishers` (`Id`) ON DELETE NO ACTION ON UPDATE CASCADE;
-        </sql>
-    </changeSet>
-    <changeSet author="blxbrgld" id="ddl-28">
-        <comment>Discs Column Can Be NULL</comment>
-        <sql>
-            ALTER TABLE `Items` CHANGE COLUMN `Discs` `Discs` INT(11) NULL DEFAULT NULL;
-        </sql>
-    </changeSet>
-    <!-- Fixtures table -->
-    <changeSet author="blxbrgld" id="ddl-29">
-        <comment>Fixtures Table</comment>
-        <sql>
-            CREATE TABLE `Fixtures` (
-                `Id` INT(11) NOT NULL AUTO_INCREMENT,
-                `Type` VARCHAR(45) NOT NULL,
-                `Fixture` VARCHAR(1000) NOT NULL,
-                `DateUpdated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-                PRIMARY KEY (`Id`)
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8
-        </sql>
-    </changeSet>
+
 </databaseChangeLog>

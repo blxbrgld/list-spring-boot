@@ -5,4 +5,5 @@
     <!-- Included Files -->
     <include file="src/main/resources/database/liquibase/changelog-ddl.xml" />
     <include file="src/main/resources/database/liquibase/changelog-dml.xml" />
+    <include file="src/main/resources/database/liquibase/changelog-it.xml" />
 </databaseChangeLog>
